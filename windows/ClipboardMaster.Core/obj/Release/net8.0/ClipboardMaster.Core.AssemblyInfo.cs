@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ClipboardMaster.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7b5a02d3268cf3d6d20f26560da426897295fb95")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8b9f6728cb8c8503305f8951c15143ebf9a1781a")]
 [assembly: System.Reflection.AssemblyProductAttribute("ClipboardMaster.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ClipboardMaster.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

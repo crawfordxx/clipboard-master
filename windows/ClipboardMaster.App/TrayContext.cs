@@ -1,15 +1,14 @@
-using System.Drawing.Drawing2D;
-using System.Runtime.InteropServices;
+using System.Diagnostics;
 using ClipboardMaster.Core;
 using Microsoft.Win32;
 
 namespace ClipboardMaster.App;
 
 /// <summary>
-/// 托盘应用核心：NotifyIcon 菜单 + 剪贴板监听 + 历史存储与持久化编排。
+/// 托盘应用核心：NotifyIcon 菜单 + 剪贴板监听 + 历史存储与持久化、历史窗口编排。
 /// 所有操作在 UI 线程。
 /// </summary>
-internal sealed class TrayContext : ApplicationContext
+internal sealed class TrayContext : ApplicationContext, IHistoryActions
 {
     private const string RunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private const string RunValueName = "ClipboardMaster";
@@ -25,6 +24,7 @@ internal sealed class TrayContext : ApplicationContext
     private readonly HistoryPersistence _persistence;
     private readonly ClipboardListener _listener;
     private readonly NotifyIcon _notifyIcon;
+    private HistoryForm? _historyForm;
     private bool _suppressNextChange;
 
     public TrayContext()
@@ -45,6 +45,12 @@ internal sealed class TrayContext : ApplicationContext
             Visible = true,
         };
         RebuildMenu();
+
+        // 支持 --open-window 启动参数直接打开历史窗口（供 Agent 验证）
+        if (Environment.GetCommandLineArgs().Contains("--open-window"))
+        {
+            OpenHistoryWindow();
+        }
     }
 
     // ---- 剪贴板事件 ----
@@ -98,35 +104,88 @@ internal sealed class TrayContext : ApplicationContext
         return null;
     }
 
+    // ---- 动作实现（托盘菜单与历史窗口共用） ----
+
+    void IHistoryActions.CopyEntry(Guid id) => CopyEntryById(id);
+
+    void IHistoryActions.DeleteEntry(Guid id)
+    {
+        _store.Remove(id);
+        SaveAndRebuild();
+    }
+
+    void IHistoryActions.RevealEntry(Guid id) => RevealEntryById(id);
+
+    void IHistoryActions.ClearAll() => OnClearHistory(this, EventArgs.Empty);
+
+    private void CopyEntryById(Guid id)
+    {
+        var entry = _store.Entry(id);
+        if (entry is null) return;
+        _suppressNextChange = true;
+        try
+        {
+            switch (entry.Content)
+            {
+                case TextContent t:
+                    Clipboard.SetText(t.Text);
+                    break;
+                case ImageContent img:
+                    using (var ms = new MemoryStream(img.ImageData))
+                    {
+                        Clipboard.SetImage(Image.FromStream(ms));
+                    }
+                    break;
+            }
+        }
+        catch (System.Runtime.InteropServices.ExternalException)
+        {
+            _suppressNextChange = false;
+        }
+    }
+
+    /// <summary>在资源管理器中定位图片条目的落盘文件。</summary>
+    private void RevealEntryById(Guid id)
+    {
+        var entry = _store.Entry(id);
+        var path = entry is null ? null : _persistence.GetImageFilePath(entry);
+        if (path is null) return;
+        Process.Start(new ProcessStartInfo("explorer.exe", $"/select,\"{path}\"")
+        {
+            UseShellExecute = true,
+        });
+    }
+
     // ---- 菜单动作 ----
 
     private void OnCopyEntry(object? sender, EventArgs e)
     {
         if (sender is ToolStripMenuItem item && item.Tag is Guid id)
         {
-            var entry = _store.Entry(id);
-            if (entry is null) return;
-            _suppressNextChange = true;
-            try
-            {
-                switch (entry.Content)
-                {
-                    case TextContent t:
-                        Clipboard.SetText(t.Text);
-                        break;
-                    case ImageContent img:
-                        using (var ms = new MemoryStream(img.ImageData))
-                        {
-                            Clipboard.SetImage(Image.FromStream(ms));
-                        }
-                        break;
-                }
-            }
-            catch (ExternalException)
-            {
-                _suppressNextChange = false;
-            }
+            CopyEntryById(id);
         }
+    }
+
+    private void OnRevealEntry(object? sender, EventArgs e)
+    {
+        if (sender is ToolStripMenuItem item && item.Tag is Guid id)
+        {
+            RevealEntryById(id);
+        }
+    }
+
+    private void OpenHistoryWindow(object? sender, EventArgs e) => OpenHistoryWindow();
+
+    private void OpenHistoryWindow()
+    {
+        if (_historyForm is null || _historyForm.IsDisposed)
+        {
+            _historyForm = new HistoryForm(this);
+            _historyForm.FormClosed += (_, _) => _historyForm = null;
+            _historyForm.SetEntries(_store.Entries);
+        }
+        _historyForm.Show();
+        _historyForm.Activate();
     }
 
     private void OnClearHistory(object? sender, EventArgs e)
@@ -194,7 +253,11 @@ internal sealed class TrayContext : ApplicationContext
     private void RebuildMenu()
     {
         var oldMenu = _notifyIcon.ContextMenuStrip;
-        var menu = new ContextMenuStrip { ImageScalingSize = new Size(20, 20) };
+        var menu = new ContextMenuStrip
+        {
+            ImageScalingSize = new Size(32, 32),
+            ShowImageMargin = true,
+        };
 
         if (_store.Entries.Count == 0)
         {
@@ -207,18 +270,30 @@ internal sealed class TrayContext : ApplicationContext
                 var item = new ToolStripMenuItem(PreviewFormatter.MenuTitle(entry.Content))
                 {
                     ToolTipText = PreviewFormatter.Tooltip(entry),
-                    Tag = entry.Id,
                 };
                 if (entry.Content is ImageContent img)
                 {
-                    item.Image = MakeThumbnail(img);
+                    item.Image = MakeMenuThumbnail(img);
+                    // 图片条目：主点击复制 + 子菜单可定位文件
+                    item.Tag = entry.Id;
+                    item.Click += OnCopyEntry;
+                    var copySub = new ToolStripMenuItem("复制到剪贴板") { Tag = entry.Id };
+                    copySub.Click += OnCopyEntry;
+                    var revealSub = new ToolStripMenuItem("在资源管理器中显示") { Tag = entry.Id };
+                    revealSub.Click += OnRevealEntry;
+                    item.DropDownItems.AddRange(new ToolStripItem[] { copySub, revealSub });
                 }
-                item.Click += OnCopyEntry;
+                else
+                {
+                    item.Tag = entry.Id;
+                    item.Click += OnCopyEntry;
+                }
                 menu.Items.Add(item);
             }
         }
 
         menu.Items.Add(new ToolStripSeparator());
+        menu.Items.Add(new ToolStripMenuItem("打开历史窗口", null, OpenHistoryWindow));
         menu.Items.Add(new ToolStripMenuItem("清空历史", null, OnClearHistory));
         menu.Items.Add(new ToolStripMenuItem("开机自启动", null, OnToggleLaunchAtLogin)
         {
@@ -229,22 +304,27 @@ internal sealed class TrayContext : ApplicationContext
 
         _notifyIcon.ContextMenuStrip = menu;
         oldMenu?.Dispose();
+
+        if (_historyForm is { IsDisposed: false })
+        {
+            _historyForm.SetEntries(_store.Entries);
+        }
     }
 
-    private static Image? MakeThumbnail(ImageContent content)
+    private static Image? MakeMenuThumbnail(ImageContent content)
     {
         try
         {
             using var ms = new MemoryStream(content.ImageData);
             using var source = Image.FromStream(ms);
-            var maxHeight = 20f;
+            var maxHeight = 32f;
             var ratio = maxHeight / Math.Max(source.Height, 1);
             var thumbnail = new Bitmap(
                 Math.Max(1, (int)(source.Width * ratio)),
                 (int)maxHeight);
             thumbnail.SetResolution(96, 96);
             using var g = Graphics.FromImage(thumbnail);
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
             g.DrawImage(source, new Rectangle(0, 0, thumbnail.Width, thumbnail.Height));
             return thumbnail;
         }
