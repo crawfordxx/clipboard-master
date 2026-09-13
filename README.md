@@ -29,7 +29,7 @@
 
 ## 产品宣传片
 
-[![观看 Clipboard Master 小马管家宣传片](assets/readme/promo-poster.png)](https://github.com/crawfordxx/clipboard-master/blob/main/assets/readme/clipboard-master-promo.mp4)
+[![观看 Clipboard Master 小马管家宣传片](assets/readme/promo-poster.png)](https://crawfordxx.github.io/clipboard-master/docs/promo/)
 
 <p align="center"><strong>小马管家，替你收好每一次复制。</strong><br><sub>约37秒 · 点击封面播放 · 原生界面使用虚构示例记录</sub></p>
 
