@@ -72,6 +72,29 @@ private func cleanup(_ dir: URL) {
     #expect(loaded[0].content == .text("keep"))
 }
 
+// MARK: - 图片文件路径（reveal in Finder 用）
+
+@Test func imageFileURLReturnsSavedFileForImageEntry() throws {
+    let dir = makeTempDir()
+    defer { cleanup(dir) }
+    let persistence = HistoryPersistence(directory: dir)
+    let entry = ClipboardEntry(
+        id: UUID(), capturedAt: Date(),
+        content: ClipboardContent.make(imageData: Data([7, 7]), pixelWidth: 4, pixelHeight: 4)!
+    )
+    try persistence.save([entry])
+
+    let url = persistence.imageFileURL(for: entry)
+    #expect(url != nil)
+    #expect(FileManager.default.fileExists(atPath: url!.path))
+    #expect(url!.lastPathComponent == "\(entry.id.uuidString).png")
+}
+
+@Test func imageFileURLNilForTextEntry() {
+    let entry = ClipboardEntry(id: UUID(), capturedAt: Date(), content: .text("t"))
+    #expect(HistoryPersistence(directory: makeTempDir()).imageFileURL(for: entry) == nil)
+}
+
 // MARK: - 目录迁移（ClipHistory → ClipboardMaster）
 
 @Test func migrateLegacyDirectoryMovesHistory() throws {

@@ -46,6 +46,13 @@ public final class HistoryPersistence {
         try? fileManager.removeItem(at: imagesURL)
     }
 
+    /// 图片条目对应的磁盘文件路径（与保存命名一致：<uuid>.png）；非图片或未落盘返回 nil。
+    public func imageFileURL(for entry: ClipboardEntry) -> URL? {
+        guard case .image = entry.content else { return nil }
+        let url = imagesURL.appendingPathComponent("\(entry.id.uuidString).png")
+        return fileManager.fileExists(atPath: url.path) ? url : nil
+    }
+
     /// 目录级迁移（v1 ClipHistory → v2 ClipboardMaster）：
     /// 仅当源存在且目标不存在时整体移动；其余情况保持不动（幂等、不覆盖用户新数据）。
     public static func migrateLegacyDirectory(from source: URL, to destination: URL) {
