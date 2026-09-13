@@ -6,6 +6,7 @@ struct HistoryStore {
     private(set) var entries: [ClipboardEntry] = []
     let capacity: Int
 
+    /// - Parameter entries: 预加载的历史（最新在前，如 `HistoryPersistence.load()` 输出）。
     init(entries: [ClipboardEntry] = [], capacity: Int = HistoryLimits.capacity) {
         self.entries = Array(entries.prefix(max(1, capacity)))
         self.capacity = max(1, capacity)

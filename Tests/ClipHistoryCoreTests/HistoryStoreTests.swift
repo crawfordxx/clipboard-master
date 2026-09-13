@@ -5,17 +5,18 @@ import Foundation
 // MARK: - 预加载
 
 @Test func seedingWithLoadedEntriesKeepsOrder() {
+    // 种子输入契约：最新在前（与 HistoryPersistence.load() 输出一致）
     let entries = (0..<5).map {
-        ClipboardEntry(id: UUID(), capturedAt: Date(), content: .text("e\($0)"))
-    }
-    let store = HistoryStore(entries: Array(entries.dropFirst()), capacity: 10)
+        ClipboardEntry(id: UUID(), capturedAt: Date(), content: .text("e\(4 - $0)"))
+    } // [e4, e3, e2, e1, e0]
+    let store = HistoryStore(entries: Array(entries.dropLast()), capacity: 10)
     #expect(store.entries.map(\.content) == [.text("e4"), .text("e3"), .text("e2"), .text("e1")])
 }
 
 @Test func seedingTrimsToCapacity() {
     let entries = (0..<5).map {
-        ClipboardEntry(id: UUID(), capturedAt: Date(), content: .text("e\($0)"))
-    }
+        ClipboardEntry(id: UUID(), capturedAt: Date(), content: .text("e\(4 - $0)"))
+    } // [e4, e3, e2, e1, e0]，容量 2 保留最新两条
     let store = HistoryStore(entries: entries, capacity: 2)
     #expect(store.entries.map(\.content) == [.text("e4"), .text("e3")])
 }
