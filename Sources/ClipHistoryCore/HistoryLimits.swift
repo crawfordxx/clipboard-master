@@ -1,15 +1,15 @@
 import Foundation
 
 /// 全局常量集中管理，避免硬编码散落各处。
-enum HistoryLimits {
+public enum HistoryLimits {
     /// 历史保留条数上限。
-    static let capacity = 200
+    public static let capacity = 200
     /// 剪贴板轮询间隔（秒）。
-    static let pollInterval: TimeInterval = 0.5
+    public static let pollInterval: TimeInterval = 0.5
     /// 单条文本存储字符上限（边界校验）。
-    static let storedTextCap = 100_000
+    public static let storedTextCap = 100_000
     /// 菜单条目标题预览长度。
-    static let menuPreviewLimit = 60
+    public static let menuPreviewLimit = 60
     /// 悬浮提示预览长度。
-    static let tooltipPreviewLimit = 200
+    public static let tooltipPreviewLimit = 200
 }

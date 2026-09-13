@@ -2,7 +2,7 @@ import Foundation
 
 /// 历史持久化：`history.json` 索引 + `images/<uuid>.png` 图片文件。
 /// 读取端逐条校验（损坏即丢弃该条，不影响其余）；损坏 JSON 备份后从空开始。
-final class HistoryPersistence {
+public final class HistoryPersistence {
     private let fileManager = FileManager.default
     private let directory: URL
     private let capacity: Int
@@ -10,14 +10,14 @@ final class HistoryPersistence {
     private var indexURL: URL { directory.appendingPathComponent("history.json") }
     private var imagesURL: URL { directory.appendingPathComponent("images") }
 
-    init(directory: URL, capacity: Int = HistoryLimits.capacity) {
+    public init(directory: URL, capacity: Int = HistoryLimits.capacity) {
         self.directory = directory
         self.capacity = max(1, capacity)
     }
 
     // MARK: - 读取
 
-    func load() -> [ClipboardEntry] {
+    public func load() -> [ClipboardEntry] {
         guard let data = try? Data(contentsOf: indexURL) else { return [] }
         guard let persisted = decodeIndex(data) else {
             backupCorruptIndex()
@@ -29,7 +29,7 @@ final class HistoryPersistence {
 
     // MARK: - 写入
 
-    func save(_ entries: [ClipboardEntry]) throws {
+    public func save(_ entries: [ClipboardEntry]) throws {
         try fileManager.createDirectory(at: imagesURL, withIntermediateDirectories: true)
         let dtos = try entries.map(dtoFromEntry)
         let index = PersistedIndex(version: PersistedIndex.currentVersion, entries: dtos)
@@ -41,7 +41,7 @@ final class HistoryPersistence {
         pruneOrphanImages(referencedBy: dtos)
     }
 
-    func clearAll() throws {
+    public func clearAll() throws {
         try? fileManager.removeItem(at: indexURL)
         try? fileManager.removeItem(at: imagesURL)
     }
