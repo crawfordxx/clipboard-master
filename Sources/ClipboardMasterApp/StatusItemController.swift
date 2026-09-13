@@ -2,7 +2,7 @@ import AppKit
 import ClipboardMasterCore
 import ServiceManagement
 
-/// 菜单栏控制器：状态栏图标、轮询定时器、历史存储与持久化的编排。
+/// 菜单栏控制器：状态栏图标、轮询定时器、历史存储与持久化、历史窗口的编排。
 /// 所有操作在主线程。
 final class StatusItemController: NSObject {
     private let pasteboard: SystemPasteboard
@@ -11,6 +11,7 @@ final class StatusItemController: NSObject {
     private let persistence: HistoryPersistence
     private let statusItem: NSStatusItem
     private var timer: Timer?
+    private let historyWindow = HistoryWindowController()
 
     override init() {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
@@ -32,6 +33,7 @@ final class StatusItemController: NSObject {
         if let button = statusItem.button {
             button.image = NSImage(systemSymbolName: "doc.on.clipboard", accessibilityDescription: "剪贴板历史")
         }
+        wireHistoryWindow()
         refreshMenu()
 
         monitor.onNewContent = { [weak self] content in
@@ -45,17 +47,49 @@ final class StatusItemController: NSObject {
         ) { [weak self] _ in
             self?.monitor.poll()
         }
+
+        // 支持启动参数 --open-window 直接打开历史窗口（供冒烟测试/Agent 验证）
+        if CommandLine.arguments.contains("--open-window") {
+            DispatchQueue.main.async { [weak self] in
+                self?.openHistoryWindow()
+            }
+        }
     }
 
     // MARK: - 菜单动作
 
     /// 点击历史条目：复制回剪贴板（并吞掉自我变更，避免回环记录）。
     @objc private func copyEntry(_ sender: NSMenuItem) {
-        guard let id = sender.representedObject as? UUID,
-              let entry = store.entry(id: id)
-        else { return }
+        guard let id = sender.representedObject as? UUID else { return }
+        copyEntryById(id)
+    }
+
+    private func copyEntryById(_ id: UUID) {
+        guard let entry = store.entry(id: id) else { return }
         pasteboard.write(entry.content)
         monitor.ignoreNextChange()
+    }
+
+    /// 在 Finder 中定位图片条目的落盘文件。
+    @objc private func revealEntry(_ sender: NSMenuItem) {
+        guard let id = sender.representedObject as? UUID else { return }
+        revealEntryById(id)
+    }
+
+    private func revealEntryById(_ id: UUID) {
+        guard let entry = store.entry(id: id),
+              let url = persistence.imageFileURL(for: entry)
+        else { return }
+        NSWorkspace.shared.activateFileViewerSelecting([url])
+    }
+
+    private func deleteEntryById(_ id: UUID) {
+        store.remove(id: id)
+        saveAndRefresh()
+    }
+
+    @objc private func openHistoryWindow() {
+        historyWindow.show()
     }
 
     @objc private func clearHistory() {
@@ -88,6 +122,15 @@ final class StatusItemController: NSObject {
 
     // MARK: - 私有
 
+    private func wireHistoryWindow() {
+        let hooks = historyWindow.hooks
+        hooks.onCopy = { [weak self] id in self?.copyEntryById(id) }
+        hooks.onDelete = { [weak self] id in self?.deleteEntryById(id) }
+        hooks.onReveal = { [weak self] id in self?.revealEntryById(id) }
+        hooks.onClearAll = { [weak self] in self?.clearHistory() }
+        historyWindow.refresh(store.entries)
+    }
+
     private func saveAndRefresh() {
         do {
             try persistence.save(store.entries)
@@ -104,9 +147,13 @@ final class StatusItemController: NSObject {
             clearAction: #selector(clearHistory),
             launchAtLoginAction: #selector(toggleLaunchAtLogin(_:)),
             quitAction: #selector(quit),
+            openWindowAction: #selector(openHistoryWindow),
             entries: store.entries,
-            launchAtLogin: SMAppService.mainApp.status == .enabled
+            launchAtLogin: SMAppService.mainApp.status == .enabled,
+            copyHandler: { [weak self] id in self?.copyEntryById(id) },
+            revealHandler: { [weak self] id in self?.revealEntryById(id) }
         )
+        historyWindow.refresh(store.entries)
     }
 
     private func logError(_ context: String, _ error: Error) {

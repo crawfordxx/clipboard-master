@@ -2,6 +2,7 @@ import AppKit
 import ClipboardMasterCore
 
 /// 从历史条目构建 NSMenu（纯构建，无状态）。
+/// 文本条目用标准菜单项；图片条目用自定义视图行（大预览 + Finder 定位按钮）。
 enum MenuFactory {
     static func makeMenu(
         target: AnyObject,
@@ -9,8 +10,11 @@ enum MenuFactory {
         clearAction: Selector,
         launchAtLoginAction: Selector,
         quitAction: Selector,
+        openWindowAction: Selector,
         entries: [ClipboardEntry],
-        launchAtLogin: Bool
+        launchAtLogin: Bool,
+        copyHandler: @escaping (UUID) -> Void,
+        revealHandler: @escaping (UUID) -> Void
     ) -> NSMenu {
         let menu = NSMenu()
 
@@ -20,45 +24,49 @@ enum MenuFactory {
             menu.addItem(empty)
         } else {
             for entry in entries {
-                let item = NSMenuItem(
-                    title: PreviewFormatter.menuTitle(for: entry.content),
-                    action: copyAction,
-                    keyEquivalent: ""
-                )
-                item.target = target
-                item.representedObject = entry.id
-                item.toolTip = PreviewFormatter.tooltip(for: entry)
-                attachThumbnail(to: item, content: entry.content)
-                menu.addItem(item)
+                switch entry.content {
+                case .text:
+                    let item = NSMenuItem(
+                        title: PreviewFormatter.menuTitle(for: entry.content),
+                        action: copyAction,
+                        keyEquivalent: ""
+                    )
+                    item.target = target
+                    item.representedObject = entry.id
+                    item.toolTip = PreviewFormatter.tooltip(for: entry)
+                    menu.addItem(item)
+                case .image:
+                    let item = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+                    let id = entry.id
+                    item.view = ImageMenuRowView(
+                        entry: entry,
+                        onCopy: { copyHandler(id) },
+                        onReveal: { revealHandler(id) }
+                    )
+                    menu.addItem(item)
+                }
             }
         }
 
         menu.addItem(.separator())
+        menu.addItem(actionItem("打开历史窗口", action: openWindowAction, target: target, key: "o"))
         menu.addItem(actionItem("清空历史", action: clearAction, target: target))
-
-        let login = actionItem("开机自启动", action: launchAtLoginAction, target: target)
-        login.state = launchAtLogin ? .on : .off
-        menu.addItem(login)
-
+        menu.addItem(actionItem("开机自启动", action: launchAtLoginAction, target: target, state: launchAtLogin ? .on : .off))
         menu.addItem(.separator())
         menu.addItem(actionItem("退出 Clipboard Master", action: quitAction, target: target))
         return menu
     }
 
-    private static func actionItem(_ title: String, action: Selector, target: AnyObject) -> NSMenuItem {
-        let item = NSMenuItem(title: title, action: action, keyEquivalent: "")
+    private static func actionItem(
+        _ title: String,
+        action: Selector,
+        target: AnyObject,
+        key: String = "",
+        state: NSControl.StateValue = .off
+    ) -> NSMenuItem {
+        let item = NSMenuItem(title: title, action: action, keyEquivalent: key)
         item.target = target
+        item.state = state
         return item
-    }
-
-    /// 图片条目挂缩略图（约 20pt 高，等比缩放）。
-    private static func attachThumbnail(to item: NSMenuItem, content: ClipboardContent) {
-        guard case let .image(data, _, _) = content,
-              let image = NSImage(data: data)
-        else { return }
-        let maxHeight: CGFloat = 20
-        let ratio = maxHeight / max(image.size.height, 1)
-        image.size = NSSize(width: max(1, image.size.width * ratio), height: maxHeight)
-        item.image = image
     }
 }
