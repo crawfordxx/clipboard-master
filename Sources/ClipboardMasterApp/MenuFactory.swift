@@ -11,6 +11,9 @@ enum MenuFactory {
         launchAtLoginAction: Selector,
         quitAction: Selector,
         openWindowAction: Selector,
+        checkUpdateAction: Selector,
+        startUpdateAction: Selector,
+        availableVersion: String?,
         entries: [ClipboardEntry],
         launchAtLogin: Bool,
         copyHandler: @escaping (UUID) -> Void,
@@ -52,6 +55,12 @@ enum MenuFactory {
         menu.addItem(actionItem("打开历史窗口", action: openWindowAction, target: target, key: "o"))
         menu.addItem(actionItem("清空历史", action: clearAction, target: target))
         menu.addItem(actionItem("开机自启动", action: launchAtLoginAction, target: target, state: launchAtLogin ? .on : .off))
+        menu.addItem(.separator())
+        if let version = availableVersion {
+            let update = actionItem("🆕 更新到 v\(version)（自动重启）", action: startUpdateAction, target: target)
+            menu.addItem(update)
+        }
+        menu.addItem(actionItem("检查更新…", action: checkUpdateAction, target: target))
         menu.addItem(.separator())
         menu.addItem(actionItem("退出 Clipboard Master", action: quitAction, target: target))
         return menu

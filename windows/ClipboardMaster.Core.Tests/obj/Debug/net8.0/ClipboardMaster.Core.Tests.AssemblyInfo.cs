@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ClipboardMaster.Core.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9c6ef987b1f664d9beca3ca0e80dd78f376a0e47")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+52d39d460c45c9ba2da55d0aecf950b91ab5dc7e")]
 [assembly: System.Reflection.AssemblyProductAttribute("ClipboardMaster.Core.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ClipboardMaster.Core.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

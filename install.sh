@@ -21,7 +21,16 @@ echo "🔨 构建中..."
 DEST="/Applications/ClipboardMaster.app"
 rm -rf "$DEST"
 cp -R dist/ClipboardMaster.app "$DEST"
-echo "✅ 已安装到 $DEST"
+
+# 写入来源清单：自更新时定位源码克隆与版本
+DATA_DIR="$HOME/Library/Application Support/ClipboardMaster"
+mkdir -p "$DATA_DIR"
+CLONE_PATH=$(cd "$(dirname "$0")" && pwd)
+VERSION=$(cat VERSION 2>/dev/null || echo unknown)
+printf '{"repo":"https://github.com/crawfordxx/clipboard-master","clonePath":"%s","version":"%s"}\n' \
+  "$CLONE_PATH" "$VERSION" > "$DATA_DIR/source.json"
+
+echo "✅ 已安装到 $DEST (v$VERSION)"
 
 if [[ "${1:-}" == "--launch" ]]; then
   open "$DEST"

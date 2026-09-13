@@ -12,6 +12,7 @@ final class StatusItemController: NSObject {
     private let statusItem: NSStatusItem
     private var timer: Timer?
     private let historyWindow = HistoryWindowController()
+    private var updateChecker: UpdateChecker!
 
     override init() {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
@@ -33,6 +34,8 @@ final class StatusItemController: NSObject {
         if let button = statusItem.button {
             button.image = NSImage(systemSymbolName: "doc.on.clipboard", accessibilityDescription: "剪贴板历史")
         }
+        updateChecker = UpdateChecker(dataDirectory: directory)
+        updateChecker.onStateChange = { [weak self] in self?.refreshMenu() }
         wireHistoryWindow()
         refreshMenu()
 
@@ -53,6 +56,11 @@ final class StatusItemController: NSObject {
             DispatchQueue.main.async { [weak self] in
                 self?.openHistoryWindow()
             }
+        }
+
+        // 启动后静默检查更新（间隔 24h）
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+            self?.updateChecker.checkAutomaticallyIfNeeded()
         }
     }
 
@@ -120,6 +128,42 @@ final class StatusItemController: NSObject {
         NSApp.terminate(nil)
     }
 
+    // MARK: - 更新
+
+    @objc private func checkForUpdates() {
+        updateChecker.checkNow()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self] in
+            self?.reportUpdateResult()
+        }
+    }
+
+    private func reportUpdateResult() {
+        NSApp.activate(ignoringOtherApps: true)
+        let alert = NSAlert()
+        switch updateChecker.state {
+        case .available(let latest):
+            alert.messageText = "发现新版本 v\(latest)"
+            alert.informativeText = "当前 v\(updateChecker.currentVersion)。更新将自动完成并重启应用，历史数据不受影响。"
+            alert.addButton(withTitle: "立即更新")
+            alert.addButton(withTitle: "稍后")
+            if alert.runModal() == .alertFirstButtonReturn {
+                updateChecker.startUpdate()
+            }
+        case .upToDate:
+            alert.messageText = "已是最新版本"
+            alert.informativeText = "当前 v\(updateChecker.currentVersion)"
+            alert.runModal()
+        default:
+            alert.messageText = "检查更新失败"
+            alert.informativeText = "网络不可用或 GitHub 无法访问，请稍后再试。"
+            alert.runModal()
+        }
+    }
+
+    @objc private func startUpdate() {
+        updateChecker.startUpdate()
+    }
+
     // MARK: - 私有
 
     private func wireHistoryWindow() {
@@ -148,6 +192,9 @@ final class StatusItemController: NSObject {
             launchAtLoginAction: #selector(toggleLaunchAtLogin(_:)),
             quitAction: #selector(quit),
             openWindowAction: #selector(openHistoryWindow),
+            checkUpdateAction: #selector(checkForUpdates),
+            startUpdateAction: #selector(startUpdate),
+            availableVersion: updateChecker?.availableVersion,
             entries: store.entries,
             launchAtLogin: SMAppService.mainApp.status == .enabled,
             copyHandler: { [weak self] id in self?.copyEntryById(id) },

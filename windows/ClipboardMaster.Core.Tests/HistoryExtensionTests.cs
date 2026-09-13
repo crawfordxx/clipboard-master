@@ -93,4 +93,25 @@ public class HistoryExtensionTests
             if (Directory.Exists(dir)) Directory.Delete(dir, true);
         }
     }
+
+    // ---- Versioning ----
+
+    [Fact]
+    public void Versioning_IsNewer()
+    {
+        Assert.True(Versioning.IsNewer("2.1.0", "2.2.0"));
+        Assert.True(Versioning.IsNewer("2.1.0", "v3.0.0"));
+        Assert.False(Versioning.IsNewer("2.1.0", "2.1.0"));
+        Assert.True(Versioning.IsNewer("2.1.0", "2.1.1"));
+        Assert.False(Versioning.IsNewer("2.1.0", "2.0.9"));
+        Assert.True(Versioning.IsNewer("2.9.9", "2.10.0")); // 数值比较非字符串
+    }
+
+    [Fact]
+    public void Versioning_MalformedIsSafe()
+    {
+        Assert.False(Versioning.IsNewer("2.1.0", ""));
+        Assert.False(Versioning.IsNewer("2.1.0", "abc"));
+        Assert.False(Versioning.IsNewer("", "2.2.0"));
+    }
 }

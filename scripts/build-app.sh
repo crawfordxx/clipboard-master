@@ -5,11 +5,13 @@ cd "$(dirname "$0")/.."
 
 swift build -c release
 
+VERSION=$(cat VERSION 2>/dev/null || echo "0.0.0")
 APP="dist/ClipboardMaster.app"
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 
 cp .build/release/ClipboardMasterApp "$APP/Contents/MacOS/ClipboardMasterApp"
+cp VERSION "$APP/Contents/Resources/VERSION"
 
 # 由 assets/icon.png 生成多尺寸 .icns
 ICONSET="dist/AppIcon.iconset"
@@ -31,8 +33,8 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
     <key>CFBundleName</key><string>Clipboard Master</string>
     <key>CFBundleDisplayName</key><string>Clipboard Master</string>
     <key>CFBundleIdentifier</key><string>com.clipboardmaster.app</string>
-    <key>CFBundleVersion</key><string>2</string>
-    <key>CFBundleShortVersionString</key><string>2.0.0</string>
+    <key>CFBundleVersion</key><string>3</string>
+    <key>CFBundleShortVersionString</key><string>__VERSION__</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleExecutable</key><string>ClipboardMasterApp</string>
     <key>CFBundleIconFile</key><string>AppIcon</string>
@@ -43,4 +45,6 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 PLIST
 
 codesign --force --sign - "$APP"
-echo "✅ 已构建 $APP"
+sed -i '' "s/__VERSION__/$VERSION/" "$APP/Contents/Info.plist"
+codesign --force --sign - "$APP" --entitlements /dev/null 2>/dev/null || codesign --force --sign - "$APP"
+echo "✅ 已构建 $APP (v$VERSION)"

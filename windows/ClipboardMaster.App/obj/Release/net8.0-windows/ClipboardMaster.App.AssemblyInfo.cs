@@ -12,11 +12,11 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("ClipboardMaster")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("2.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.0.0+8b9f6728cb8c8503305f8951c15143ebf9a1781a")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("2.1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.1.0+52d39d460c45c9ba2da55d0aecf950b91ab5dc7e")]
 [assembly: System.Reflection.AssemblyProductAttribute("ClipboardMaster")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ClipboardMaster")]
-[assembly: System.Reflection.AssemblyVersionAttribute("2.0.0.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("2.1.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
 

@@ -12,6 +12,7 @@ internal sealed class TrayContext : ApplicationContext, IHistoryActions
 {
     private const string RunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private const string RunValueName = "ClipboardMaster";
+    private const string RepoSlug = "crawfordxx/clipboard-master";
 
     // 密码管理器（1Password 等）标记的「不应记录」格式名
     private static readonly string[] ExcludedFormats =
@@ -26,12 +27,18 @@ internal sealed class TrayContext : ApplicationContext, IHistoryActions
     private readonly NotifyIcon _notifyIcon;
     private HistoryForm? _historyForm;
     private bool _suppressNextChange;
+    private string? _latestVersion;
+    private string? _sourceClonePath;
+    private readonly SynchronizationContext _ui;
 
     public TrayContext()
     {
+        _ = new Control(); // 触发 WinForms 同步上下文安装，供后台线程回 UI
+        _ui = SynchronizationContext.Current ?? new SynchronizationContext();
         var directory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "ClipboardMaster");
+        ReadSourceManifest();
         _persistence = new HistoryPersistence(directory);
         _store = new HistoryStore(_persistence.Load());
         _listener = new ClipboardListener();
@@ -51,6 +58,9 @@ internal sealed class TrayContext : ApplicationContext, IHistoryActions
         {
             OpenHistoryWindow();
         }
+
+        // 启动后静默检查更新（后台线程，结果回 UI 线程）
+        ThreadPool.QueueUserWorkItem(_ => CheckForUpdatesAsync(manual: false).Wait());
     }
 
     // ---- 剪贴板事件 ----
@@ -229,6 +239,100 @@ internal sealed class TrayContext : ApplicationContext, IHistoryActions
         ExitThread();
     }
 
+    // ---- 更新 ----
+
+    private void ReadSourceManifest()
+    {
+        try
+        {
+            var path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "ClipboardMaster", "source.json");
+            if (!File.Exists(path)) return;
+            using var doc = System.Text.Json.JsonDocument.Parse(File.ReadAllText(path));
+            if (doc.RootElement.TryGetProperty("clonePath", out var clonePath))
+            {
+                _sourceClonePath = clonePath.GetString();
+            }
+        }
+        catch (Exception)
+        {
+            // 清单缺失/损坏：不影响主功能，仅无法自更新
+        }
+    }
+
+    private static string CurrentVersion()
+    {
+        var path = Path.Combine(AppContext.BaseDirectory, "VERSION");
+        return File.Exists(path) ? File.ReadAllText(path).Trim() : "0.0.0";
+    }
+
+    private void OnCheckForUpdates(object? sender, EventArgs e)
+    {
+        _ = CheckForUpdatesAsync(manual: true);
+    }
+
+    private async Task CheckForUpdatesAsync(bool manual)
+    {
+        try
+        {
+            using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(8) };
+            http.DefaultRequestHeaders.UserAgent.ParseAdd("ClipboardMaster");
+            var json = await http.GetStringAsync($"https://api.github.com/repos/{RepoSlug}/releases/latest");
+            using var doc = System.Text.Json.JsonDocument.Parse(json);
+            var tag = doc.RootElement.GetProperty("tag_name").GetString()?.TrimStart('v');
+            var hasUpdate = tag is not null && Versioning.IsNewer(CurrentVersion(), tag);
+            _ui.Post(_ =>
+            {
+                _latestVersion = hasUpdate ? tag : null;
+                RebuildMenu();
+                if (manual)
+                {
+                    var message = hasUpdate
+                        ? $"发现新版本 v{tag}（当前 v{CurrentVersion()}），托盘菜单中点击「🆕 更新到 v{tag}」即可自动更新。"
+                        : $"已是最新版本 v{CurrentVersion()}。";
+                    MessageBox.Show(message, @"Clipboard Master 更新",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }, null);
+        }
+        catch (Exception)
+        {
+            if (manual)
+            {
+                _ui.Post(_ => MessageBox.Show(
+                    "检查更新失败：网络不可用或 GitHub 无法访问。",
+                    @"Clipboard Master 更新",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning), null);
+            }
+        }
+    }
+
+    private void OnStartUpdate(object? sender, EventArgs e)
+    {
+        var tag = _latestVersion;
+        if (tag is null) return;
+        var clone = _sourceClonePath;
+        var script = clone is null ? null : Path.Combine(clone, "scripts", "update.ps1");
+        if (clone is null || !Directory.Exists(Path.Combine(clone, ".git")) ||
+            script is null || !File.Exists(script))
+        {
+            // 克隆丢失：回退打开 Releases 页，交给用户/Agent 处理
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = $"https://github.com/{RepoSlug}/releases/latest",
+                UseShellExecute = true,
+            });
+            return;
+        }
+        Process.Start(new ProcessStartInfo("powershell",
+            $"-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"{script}\" -CloneDir \"{clone}\" -Tag {tag}")
+        {
+            UseShellExecute = false,
+            CreateNoWindow = true,
+        });
+    }
+
     private bool IsLaunchAtLoginEnabled()
     {
         using var key = Registry.CurrentUser.OpenSubKey(RunKeyPath);
@@ -299,6 +403,12 @@ internal sealed class TrayContext : ApplicationContext, IHistoryActions
         {
             Checked = IsLaunchAtLoginEnabled(),
         });
+        menu.Items.Add(new ToolStripSeparator());
+        if (_latestVersion is not null)
+        {
+            menu.Items.Add(new ToolStripMenuItem($"🆕 更新到 v{_latestVersion}（自动重启）", null, OnStartUpdate));
+        }
+        menu.Items.Add(new ToolStripMenuItem("检查更新…", null, OnCheckForUpdates));
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add(new ToolStripMenuItem("退出 Clipboard Master", null, OnQuit));
 
