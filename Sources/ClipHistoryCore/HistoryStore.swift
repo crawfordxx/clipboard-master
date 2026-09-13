@@ -6,7 +6,8 @@ struct HistoryStore {
     private(set) var entries: [ClipboardEntry] = []
     let capacity: Int
 
-    init(capacity: Int = HistoryLimits.capacity) {
+    init(entries: [ClipboardEntry] = [], capacity: Int = HistoryLimits.capacity) {
+        self.entries = Array(entries.prefix(max(1, capacity)))
         self.capacity = max(1, capacity)
     }
 

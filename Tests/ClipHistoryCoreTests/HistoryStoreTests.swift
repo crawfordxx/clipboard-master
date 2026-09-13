@@ -2,6 +2,24 @@ import Testing
 import Foundation
 @testable import ClipHistoryCore
 
+// MARK: - 预加载
+
+@Test func seedingWithLoadedEntriesKeepsOrder() {
+    let entries = (0..<5).map {
+        ClipboardEntry(id: UUID(), capturedAt: Date(), content: .text("e\($0)"))
+    }
+    let store = HistoryStore(entries: Array(entries.dropFirst()), capacity: 10)
+    #expect(store.entries.map(\.content) == [.text("e4"), .text("e3"), .text("e2"), .text("e1")])
+}
+
+@Test func seedingTrimsToCapacity() {
+    let entries = (0..<5).map {
+        ClipboardEntry(id: UUID(), capturedAt: Date(), content: .text("e\($0)"))
+    }
+    let store = HistoryStore(entries: entries, capacity: 2)
+    #expect(store.entries.map(\.content) == [.text("e4"), .text("e3")])
+}
+
 // MARK: - 插入与排序
 
 @Test func insertPutsNewestFirst() {
