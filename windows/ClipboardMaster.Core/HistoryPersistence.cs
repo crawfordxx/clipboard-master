@@ -71,6 +71,14 @@ public sealed class HistoryPersistence
         if (Directory.Exists(ImagesPath)) Directory.Delete(ImagesPath, true);
     }
 
+    /// <summary>图片条目对应的磁盘文件路径（与保存命名一致：{uuid}.png）；非图片或未落盘返回 null。</summary>
+    public string? GetImageFilePath(ClipboardEntry entry)
+    {
+        if (entry.Content is not ImageContent) return null;
+        var path = Path.Combine(ImagesPath, $"{entry.Id.ToString("D")}.png");
+        return File.Exists(path) ? path : null;
+    }
+
     // ---- 内部转换与校验 ----
 
     private ClipboardEntry? ToEntry(PersistedEntry dto) => dto.Kind switch

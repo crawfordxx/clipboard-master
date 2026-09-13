@@ -98,3 +98,4 @@
 /Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core.Tests/obj/Debug/net8.0/ClipboardMaster.Core.Tests.pdb
 /Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core.Tests/obj/Debug/net8.0/ClipboardMaster.Core.Tests.genruntimeconfig.cache
 /Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core.Tests/obj/Debug/net8.0/ref/ClipboardMaster.Core.Tests.dll
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core.Tests/obj/Debug/net8.0/ClipboardMaster.Core.Tests.sourcelink.json

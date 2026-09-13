@@ -44,5 +44,14 @@ public sealed class HistoryStore
 
     public void RemoveAll() => _entries = new List<ClipboardEntry>();
 
+    /// <summary>删除单条；不存在返回 false（幂等）。</summary>
+    public bool Remove(Guid id)
+    {
+        var index = _entries.FindIndex(e => e.Id == id);
+        if (index < 0) return false;
+        _entries = _entries.Where((_, i) => i != index).ToList();
+        return true;
+    }
+
     public ClipboardEntry? Entry(Guid id) => _entries.FirstOrDefault(e => e.Id == id);
 }

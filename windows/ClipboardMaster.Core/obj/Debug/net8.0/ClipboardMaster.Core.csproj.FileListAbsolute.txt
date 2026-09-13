@@ -9,3 +9,4 @@
 /Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/obj/Debug/net8.0/refint/ClipboardMaster.Core.dll
 /Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/obj/Debug/net8.0/ClipboardMaster.Core.pdb
 /Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/obj/Debug/net8.0/ref/ClipboardMaster.Core.dll
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/obj/Debug/net8.0/ClipboardMaster.Core.sourcelink.json
