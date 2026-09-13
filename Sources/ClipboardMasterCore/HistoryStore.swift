@@ -35,4 +35,12 @@ public struct HistoryStore {
     public func entry(id: UUID) -> ClipboardEntry? {
         entries.first { $0.id == id }
     }
+
+    /// 删除单条；条目不存在返回 false（幂等）。
+    @discardableResult
+    public mutating func remove(id: UUID) -> Bool {
+        guard let index = entries.firstIndex(where: { $0.id == id }) else { return false }
+        entries.remove(at: index)
+        return true
+    }
 }

@@ -79,6 +79,31 @@ import Foundation
     #expect(store.entries.map(\.content) == [.text("a"), .text("b")])
 }
 
+// MARK: - 单条删除
+
+@Test func removeEntryById() {
+    var store = HistoryStore()
+    store.insert(.text("a"))
+    store.insert(.text("b"))
+    store.insert(.text("c"))
+    let idB = store.entries[1].id
+    let removed = store.remove(id: idB)
+    #expect(removed)
+    #expect(store.entries.map(\.content) == [.text("c"), .text("a")])
+    #expect(store.remove(id: idB) == false) // 已删，再删返回 false
+}
+
+@Test func removeKeepsOthersIntact() {
+    var store = HistoryStore()
+    store.insert(.text("keep"))
+    let gone = store.entries[0].id
+    store.insert(.text("other"))
+    let removed = store.remove(id: gone)
+    #expect(removed)
+    #expect(store.entries.map(\.content) == [.text("other")])
+    #expect(store.entry(id: gone) == nil)
+}
+
 // MARK: - 清空与查询
 
 @Test func entryById() {
