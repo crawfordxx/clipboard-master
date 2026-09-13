@@ -6,7 +6,7 @@
 ## 这是什么
 
 跨平台（macOS + Windows）剪贴板历史工具：托盘/菜单栏图标下拉快取 + 完整历史窗口
-（搜索/删除），文本与图片历史各 200 条，点击任意一条即复制回剪贴板；
+（搜索/删除），文字与图片历史合计 200 条；macOS 点击正文预览编辑、右侧按钮复制，Windows 使用原托盘菜单；
 应用内自更新（GitHub Releases）。原生实现，零第三方运行时依赖。
 
 ## 安装（按用户系统二选一）
@@ -36,8 +36,8 @@ powershell -ExecutionPolicy Bypass -File install.ps1 -Launch
 3. 数据落盘检查：
    - macOS: `~/Library/Application Support/ClipboardMaster/history.json`
    - Windows: `%APPDATA%\ClipboardMaster\history.json`
-4. 让用户点击该条目 → 再粘贴出来应得到 `hello`
-5. 历史窗口：托盘菜单「打开历史窗口」应可搜索/双击复制/右键删除；
+4. macOS 点击条目右侧复制按钮，Windows 点击原托盘条目 → 再粘贴出来应得到 `hello`
+5. 历史窗口：托盘菜单「打开历史窗口」应可搜索；macOS 点击预览编辑/右侧复制/右键删除，Windows 保留双击复制；
    也可用启动参数验证：macOS `open /Applications/ClipboardMaster.app --args --open-window`，
    Windows `ClipboardMaster.exe --open-window`
 

@@ -17,6 +17,10 @@ public final class SystemPasteboard: PasteboardReading {
     public func readContent() -> ClipboardContent? {
         let types = pasteboard.types ?? []
         guard !types.contains(Self.concealedType) else { return nil }
+        if let urls = pasteboard.readObjects(forClasses: [NSURL.self], options: [.urlReadingFileURLsOnly: true]) as? [URL],
+           !urls.isEmpty, urls.allSatisfy(EntryReferences.isSupported) {
+            return ClipboardContent.make(text: urls.map(\.absoluteString).joined(separator: "\n"))
+        }
         if let text = pasteboard.string(forType: .string) {
             return ClipboardContent.make(text: text)
         }
@@ -33,6 +37,16 @@ public final class SystemPasteboard: PasteboardReading {
         pasteboard.clearContents()
         switch content {
         case .text(let text):
+            let files = EntryReferences.fileURLs(in: text)
+            if !files.isEmpty {
+                let items = files.map { url in
+                    let item = NSPasteboardItem()
+                    item.setString(url.absoluteString, forType: .fileURL)
+                    item.setString(url.absoluteString, forType: .string)
+                    return item
+                }
+                return pasteboard.writeObjects(items)
+            }
             return pasteboard.setString(text, forType: .string)
         case .image(let imageData, _, _):
             return pasteboard.setData(imageData, forType: .png)

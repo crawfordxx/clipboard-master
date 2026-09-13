@@ -20,6 +20,7 @@ final class UpdateChecker: ObservableObject {
         didSet { onStateChange?() }
     }
     var onStateChange: (() -> Void)?
+    var beforeInstall: (() -> Bool)?
     private let dataDirectory: URL
     private let defaults: UserDefaults
     private let version: String?
@@ -116,6 +117,7 @@ final class UpdateChecker: ObservableObject {
             state = .manualInstall(latest: latest)
             return
         }
+        guard beforeInstall?() != false else { return }
         do {
             try FileManager.default.createDirectory(at: dataDirectory, withIntermediateDirectories: true)
             let logURL = dataDirectory.appendingPathComponent("update.log")

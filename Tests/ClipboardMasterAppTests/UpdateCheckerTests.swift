@@ -86,6 +86,19 @@ final class UpdateCheckerTests: XCTestCase {
         return directory
     }
 
+    func testUnsavedDraftCanCancelInstallerBeforeAnyProcessStarts() async throws {
+        let directory = try installFixture(script: "#!/bin/bash\nexit 99\n")
+        defer { try? FileManager.default.removeItem(at: directory) }
+        checker.checkNow()
+        await finish(200, #"{"tag_name":"v2.2.0"}"#)
+        var confirmations = 0
+        checker.beforeInstall = { confirmations += 1; return false }
+        checker.startUpdate()
+        XCTAssertEqual(confirmations, 1)
+        XCTAssertEqual(checker.state, .available(latest: "2.2.0"))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: directory.appendingPathComponent("update.log").path))
+    }
+
     func testInstallerFailureReportsExitAndRejectsDuplicateOperations() async throws {
         let directory = try installFixture(script: "#!/bin/bash\nsleep 0.3\nprintf 'fixture stdout\\n'\nprintf 'fixture stderr\\n' >&2\nexit 2\n")
         defer { try? FileManager.default.removeItem(at: directory) }

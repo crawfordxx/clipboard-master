@@ -38,6 +38,7 @@ struct MenuPanelView: View {
     let onClose: () -> Void
     let onQuit: () -> Void
     var onCopyInPlace: ((UUID) -> Void)? = nil
+    var onPreview: ((UUID) -> Void)? = nil
     @State private var query = ""
     @State private var confirmClear = false
     @FocusState private var focusedEntry: UUID?
@@ -141,7 +142,7 @@ struct MenuPanelView: View {
                 LazyVStack(spacing: 3) {
                     ForEach(filtered) { entry in
                         HStack(spacing: 2) {
-                            Button { onCopy(entry.id) } label: {
+                            Button { (onPreview ?? onCopy)(entry.id) } label: {
                                 HStack(spacing: 10) {
                                     thumbnail(entry.content)
                                     VStack(alignment: .leading, spacing: 4) {
@@ -156,8 +157,8 @@ struct MenuPanelView: View {
                             .buttonStyle(PanelButtonStyle())
                             .focused($focusedEntry, equals: entry.id)
                             .overlay(RoundedRectangle(cornerRadius: 9).stroke(focusedEntry == entry.id ? Color.accentColor : .clear, lineWidth: 2))
-                            .onKeyPress(.return) { onCopy(entry.id); return .handled }
-                            .help(PreviewFormatter.tooltip(for: entry))
+                            .onKeyPress(.return) { (onPreview ?? onCopy)(entry.id); return .handled }
+                            .help("点击预览与编辑\n" + PreviewFormatter.tooltip(for: entry))
                             if case .image = entry.content {
                                 Button { onReveal(entry.id) } label: {
                                     Image(systemName: "folder").frame(width: 28, height: 34)

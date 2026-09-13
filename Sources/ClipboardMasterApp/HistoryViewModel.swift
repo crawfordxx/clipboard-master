@@ -8,6 +8,7 @@ final class HistoryViewModel: ObservableObject {
     @Published private(set) var entries: [ClipboardEntry] = []
     @Published var query = ""
 
+    var onPreview: ((UUID) -> Void)?
     var onCopy: ((UUID) -> Void)?
     var onDelete: ((UUID) -> Void)?
     var onReveal: ((UUID) -> Void)?
@@ -26,6 +27,7 @@ final class HistoryViewModel: ObservableObject {
         entries = newEntries
     }
 
+    func preview(_ id: UUID) { onPreview?(id) }
     func copy(_ id: UUID) { onCopy?(id) }
     func delete(_ id: UUID) { onDelete?(id) }
     func reveal(_ id: UUID) { onReveal?(id) }

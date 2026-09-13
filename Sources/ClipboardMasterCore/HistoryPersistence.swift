@@ -90,7 +90,8 @@ public final class HistoryPersistence {
     private func entryFromDTO(_ dto: PersistedEntry) -> ClipboardEntry? {
         switch dto.kind {
         case .text(let text):
-            guard let content = ClipboardContent.make(text: text) else { return nil }
+            guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+            let content = ClipboardContent.text(String(text.prefix(HistoryLimits.storedTextCap)))
             return ClipboardEntry(id: dto.id, capturedAt: dto.capturedAt, content: content)
         case .image(let file, let width, let height):
             let url = imagesURL.appendingPathComponent(file)

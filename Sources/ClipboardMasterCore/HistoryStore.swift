@@ -28,6 +28,18 @@ public struct HistoryStore {
         return true
     }
 
+    /// Replace in place; reject stale edits instead of resurrecting or overwriting records.
+    public mutating func replaceText(id: UUID, expected: String, with text: String) throws {
+        guard let entry = entry(id: id) else { throw EntryEditError.missingEntry }
+        guard case .text(let current) = entry.content else { throw EntryEditError.notText }
+        guard current == expected else { throw EntryEditError.conflict }
+        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw EntryEditError.emptyText }
+        guard text.count <= HistoryLimits.storedTextCap else { throw EntryEditError.tooLong }
+        entries = entries.filter { $0.id == id || $0.content != .text(text) }.map {
+            $0.id == id ? ClipboardEntry(id: id, capturedAt: entry.capturedAt, content: .text(text)) : $0
+        }
+    }
+
     public mutating func removeAll() {
         entries.removeAll()
     }

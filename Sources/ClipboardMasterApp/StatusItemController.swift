@@ -13,6 +13,7 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
     private let statusItem: NSStatusItem
     private var timer: Timer?
     private let historyWindow = HistoryWindowController()
+    private var editors: [UUID: EntryEditorWindowController] = [:]
     private var updateChecker: UpdateChecker!
     private let popover = NSPopover()
     private let panelModel = MenuPanelModel()
@@ -39,6 +40,15 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
             button.image = NSImage(systemSymbolName: "doc.on.clipboard", accessibilityDescription: "剪贴板历史")
         }
         updateChecker = UpdateChecker(dataDirectory: directory)
+        updateChecker.beforeInstall = { [weak self] in
+            guard let self else { return false }
+            self.previousApplication = nil
+            self.popover.performClose(nil)
+            guard self.confirmPendingEdits() else { return false }
+            // The updater restarts the process; close confirmed drafts before it can run.
+            for editor in Array(self.editors.values) { editor.closeAfterConfirmation() }
+            return true
+        }
         updateChecker.onStateChange = { [weak self] in self?.refreshMenu() }
         popover.behavior = .transient
         popover.delegate = self
@@ -57,7 +67,8 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
             onToggleLogin: { [weak self] in self?.toggleLaunchAtLogin() },
             onClose: { [weak self] in self?.popover.performClose(nil) },
             onQuit: { [weak self] in self?.quit() },
-            onCopyInPlace: { [weak self] id in self?.copyEntryById(id) }
+            onCopyInPlace: { [weak self] id in self?.copyEntryById(id) },
+            onPreview: { [weak self] id in self?.openEntryById(id) }
         ))
         statusItem.button?.target = self
         statusItem.button?.action = #selector(togglePopover)
@@ -135,6 +146,31 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         return true
     }
 
+    private func openEntryById(_ id: UUID) {
+        if case .installing = updateChecker.state {
+            panelModel.notice = "更新安装中，完成后再打开编辑器。"
+            return
+        }
+        guard let entry = store.entry(id: id) else { return }
+        previousApplication = nil
+        popover.performClose(nil)
+        if let editor = editors[id] { editor.show(); return }
+        let model = EntryEditorModel(entry: entry, imageURL: persistence.imageFileURL(for: entry), onSave: { [weak self] id, expected, text in
+            guard let self else { throw EntryEditError.missingEntry }
+            var updated = self.store
+            try updated.replaceText(id: id, expected: expected, with: text)
+            // Commit durable state before publishing the edited record or success feedback.
+            try self.persistence.save(updated.entries)
+            self.store = updated
+            if self.panelModel.copiedEntryID == id { self.panelModel.clearCopyFeedback() }
+            self.refreshMenu()
+        }, onCopy: { [weak self] id in self?.copyEntryById(id) ?? false })
+        let editor = EntryEditorWindowController(model: model)
+        editor.onClose = { [weak self] in self?.editors.removeValue(forKey: id) }
+        editors[id] = editor
+        editor.show()
+    }
+
     private func revealEntryById(_ id: UUID) {
         guard let entry = store.entry(id: id),
               let url = persistence.imageFileURL(for: entry)
@@ -176,6 +212,10 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         panelModel.launchAtLogin = service.status == .enabled
     }
 
+    func confirmPendingEdits() -> Bool {
+        Array(editors.values).allSatisfy { $0.confirmDiscardOrSave() }
+    }
+
     @objc private func quit() {
         NSApp.terminate(nil)
     }
@@ -184,6 +224,7 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
 
     private func wireHistoryWindow() {
         let hooks = historyWindow.hooks
+        hooks.onPreview = { [weak self] id in self?.openEntryById(id) }
         hooks.onCopy = { [weak self] id in self?.copyEntryById(id) }
         hooks.onDelete = { [weak self] id in self?.deleteEntryById(id) }
         hooks.onReveal = { [weak self] id in self?.revealEntryById(id) }
@@ -201,6 +242,7 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
     }
 
     private func refreshMenu() {
+        for (id, editor) in editors where store.entry(id: id) == nil { editor.model.markUnavailable() }
         panelModel.entries = store.entries
         panelModel.launchAtLogin = SMAppService.mainApp.status == .enabled
         historyWindow.refresh(store.entries)

@@ -1,7 +1,7 @@
 import SwiftUI
 import ClipboardMasterCore
 
-/// 历史窗口主界面：搜索 + 列表（双击复制/右键菜单）+ 底部统计与清空。
+/// 历史窗口主界面：搜索 + 列表（点击预览/右侧复制/右键菜单）+ 底部统计与清空。
 struct HistoryView: View {
     @ObservedObject var vm: HistoryViewModel
 
@@ -67,22 +67,29 @@ struct HistoryView: View {
     }
 }
 
-/// 单条历史行：缩略图/图标 + 两行标题 + 相对时间；双击复制，右键菜单。
+/// 单条历史行：缩略图/图标 + 两行标题 + 相对时间；点击预览与编辑，右侧复制，右键菜单。
 private struct EntryRow: View {
     let entry: ClipboardEntry
     let vm: HistoryViewModel
 
     var body: some View {
         HStack(spacing: 10) {
-            thumbnail
-            Text(PreviewFormatter.menuTitle(for: entry.content))
-                .lineLimit(2)
-            Spacer(minLength: 0)
+            Button { vm.preview(entry.id) } label: {
+                HStack(spacing: 10) {
+                    thumbnail
+                    Text(PreviewFormatter.menuTitle(for: entry.content)).lineLimit(2)
+                    Spacer(minLength: 0)
+                }.contentShape(Rectangle())
+            }.buttonStyle(.plain).help("预览与编辑")
+            Button { vm.copy(entry.id) } label: {
+                Image(systemName: "doc.on.doc").frame(width: 30, height: 32)
+            }.buttonStyle(.borderless).help("复制到剪贴板").accessibilityLabel("复制这条记录")
         }
         .padding(.vertical, 3)
         .contentShape(Rectangle())
-        .onTapGesture(count: 2) { vm.copy(entry.id) }
+
         .contextMenu {
+            Button("预览与编辑") { vm.preview(entry.id) }
             Button("复制到剪贴板") { vm.copy(entry.id) }
             if entry.content.isImage {
                 Button("在 Finder 中显示") { vm.reveal(entry.id) }
