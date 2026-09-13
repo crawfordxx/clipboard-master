@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/readme/pony-hero.png" alt="Clipboard Master：抱着剪贴板的小马管家" width="960">
+  <img src="assets/readme/pony-hero.png" alt="Clipboard Master：抱着剪贴板的小马clipboard大师" width="960">
 </p>
 
 <h1 align="center">Clipboard Master</h1>
@@ -32,9 +32,9 @@
 
 https://github.com/user-attachments/assets/f0510cd3-552b-4fa1-b90e-2b55a6da12f1
 
-<p align="center"><strong>小马管家，替你收好每一次复制。</strong><br><sub>约37秒 · 直接播放 · 原生界面使用虚构示例记录</sub></p>
+<p align="center"><strong>小马clipboard大师，替你收好每一次复制。</strong><br><sub>约37秒 · 直接播放 · 原生界面使用虚构示例记录</sub></p>
 
-[独立播放器](https://crawfordxx.github.io/clipboard-master/docs/promo/) · [带配乐版](assets/readme/clipboard-master-promo.mp4) · [仅音效版](assets/readme/clipboard-master-promo-nobgm.mp4) · [视频工程与素材说明](promo/README.md)
+[独立播放器](https://crawfordxx.github.io/clipboard-master/docs/promo/)
 
 > 视频录制早于本次逐条复制按钮改动，最新交互以界面截图和下文说明为准。
 
@@ -111,7 +111,7 @@ powershell -ExecutionPolicy Bypass -File install.ps1 -Launch
 ## 本机存储，不做云端同步
 
 <p align="center">
-  <img src="assets/readme/pony-local-history.png" alt="小马管家抱着剪贴板，整理文字与图片历史的概念插画" width="720" loading="lazy">
+  <img src="assets/readme/pony-local-history.png" alt="小马clipboard大师抱着剪贴板，整理文字与图片历史的概念插画" width="720" loading="lazy">
 </p>
 
 - 剪贴板历史保存在本机，不发送到服务器；没有账户和云同步功能。

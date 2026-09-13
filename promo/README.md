@@ -1,4 +1,4 @@
-# Clipboard Master · 小马管家宣传片
+# Clipboard Master · 小马clipboard大师宣传片
 
 原生 SwiftUI 截图与统一小马+剪贴板IP，1920×1080，30fps，80拍，约37秒。主时间线在 src/timeline.mjs，视觉在 src/Scenes.tsx，src/workbench.ts 与主合成同源。
 

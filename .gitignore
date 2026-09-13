@@ -9,3 +9,7 @@ promo/qa/
 promo/out/
 promo/.cache/
 promo/public/audio/
+
+# Local .NET build output can contain absolute user paths.
+windows/**/bin/
+windows/**/obj/
