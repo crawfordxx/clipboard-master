@@ -1,6 +1,6 @@
 import Testing
 import Foundation
-@testable import ClipHistoryCore
+@testable import ClipboardMasterCore
 
 // MARK: - ClipboardContent.make(text:)
 

@@ -1,5 +1,5 @@
 import AppKit
-import ClipHistoryCore
+import ClipboardMasterCore
 
 /// 从历史条目构建 NSMenu（纯构建，无状态）。
 enum MenuFactory {
@@ -41,7 +41,7 @@ enum MenuFactory {
         menu.addItem(login)
 
         menu.addItem(.separator())
-        menu.addItem(actionItem("退出 ClipHistory", action: quitAction, target: target))
+        menu.addItem(actionItem("退出 Clipboard Master", action: quitAction, target: target))
         return menu
     }
 

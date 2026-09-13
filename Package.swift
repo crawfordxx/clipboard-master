@@ -2,17 +2,17 @@
 import PackageDescription
 
 let package = Package(
-    name: "ClipHistory",
+    name: "ClipboardMaster",
     platforms: [.macOS(.v14)],
     targets: [
-        .target(name: "ClipHistoryCore"),
+        .target(name: "ClipboardMasterCore"),
         .executableTarget(
-            name: "ClipHistoryApp",
-            dependencies: ["ClipHistoryCore"]
+            name: "ClipboardMasterApp",
+            dependencies: ["ClipboardMasterCore"]
         ),
         .testTarget(
-            name: "ClipHistoryCoreTests",
-            dependencies: ["ClipHistoryCore"]
+            name: "ClipboardMasterCoreTests",
+            dependencies: ["ClipboardMasterCore"]
         ),
     ]
 )

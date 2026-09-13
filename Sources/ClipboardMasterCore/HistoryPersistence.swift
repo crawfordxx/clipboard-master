@@ -46,6 +46,23 @@ public final class HistoryPersistence {
         try? fileManager.removeItem(at: imagesURL)
     }
 
+    /// 目录级迁移（v1 ClipHistory → v2 ClipboardMaster）：
+    /// 仅当源存在且目标不存在时整体移动；其余情况保持不动（幂等、不覆盖用户新数据）。
+    public static func migrateLegacyDirectory(from source: URL, to destination: URL) {
+        let fm = FileManager.default
+        guard fm.fileExists(atPath: source.path),
+              !fm.fileExists(atPath: destination.path)
+        else { return }
+        do {
+            try fm.createDirectory(at: destination.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try fm.moveItem(at: source, to: destination)
+        } catch {
+            FileHandle.standardError.write(
+                Data("[ClipboardMaster] 历史目录迁移失败（保留原目录）: \(error)\n".utf8)
+            )
+        }
+    }
+
     // MARK: - 私有：编解码
 
     private func decodeIndex(_ data: Data) -> PersistedIndex? {

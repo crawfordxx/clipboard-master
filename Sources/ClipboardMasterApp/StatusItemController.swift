@@ -1,5 +1,5 @@
 import AppKit
-import ClipHistoryCore
+import ClipboardMasterCore
 import ServiceManagement
 
 /// 菜单栏控制器：状态栏图标、轮询定时器、历史存储与持久化的编排。
@@ -15,7 +15,10 @@ final class StatusItemController: NSObject {
     override init() {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             ?? FileManager.default.temporaryDirectory
-        let directory = appSupport.appendingPathComponent("ClipHistory", isDirectory: true)
+        let directory = appSupport.appendingPathComponent("ClipboardMaster", isDirectory: true)
+        // v1 目录名迁移：ClipHistory → ClipboardMaster（仅在新目录不存在时执行一次）
+        let legacyDirectory = appSupport.appendingPathComponent("ClipHistory", isDirectory: true)
+        HistoryPersistence.migrateLegacyDirectory(from: legacyDirectory, to: directory)
 
         let systemPasteboard = SystemPasteboard()
         self.pasteboard = systemPasteboard
@@ -107,6 +110,6 @@ final class StatusItemController: NSObject {
     }
 
     private func logError(_ context: String, _ error: Error) {
-        FileHandle.standardError.write(Data("[ClipHistory] \(context): \(error)\n".utf8))
+        FileHandle.standardError.write(Data("[ClipboardMaster] \(context): \(error)\n".utf8))
     }
 }

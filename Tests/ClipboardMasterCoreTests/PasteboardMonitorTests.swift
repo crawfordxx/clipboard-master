@@ -1,6 +1,6 @@
 import Testing
 import Foundation
-@testable import ClipHistoryCore
+@testable import ClipboardMasterCore
 
 /// 测试替身：不触碰真实 NSPasteboard。
 final class FakePasteboard: PasteboardReading {

@@ -1,5 +1,5 @@
 import AppKit
-import ClipHistoryCore
+import ClipboardMasterCore
 
 // LSUIElement 应用：不显示 Dock 图标，仅菜单栏。
 let app = NSApplication.shared

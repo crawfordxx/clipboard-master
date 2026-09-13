@@ -1,6 +1,6 @@
 import Testing
 import Foundation
-@testable import ClipHistoryCore
+@testable import ClipboardMasterCore
 
 /// 每个测试用独立临时目录，teardown 清理。
 private func makeTempDir() -> URL {
@@ -70,6 +70,42 @@ private func cleanup(_ dir: URL) {
     let loaded = persistence.load()
     #expect(loaded.count == 1)
     #expect(loaded[0].content == .text("keep"))
+}
+
+// MARK: - 目录迁移（ClipHistory → ClipboardMaster）
+
+@Test func migrateLegacyDirectoryMovesHistory() throws {
+    let legacy = makeTempDir()
+    let fresh = makeTempDir()
+    defer { cleanup(legacy); cleanup(fresh) }
+    let legacyPersistence = HistoryPersistence(directory: legacy)
+    try legacyPersistence.save([ClipboardEntry(id: UUID(), capturedAt: Date(), content: .text("legacy"))])
+
+    HistoryPersistence.migrateLegacyDirectory(from: legacy, to: fresh)
+
+    #expect(HistoryPersistence(directory: fresh).load().first?.content == .text("legacy"))
+}
+
+@Test func migrateLegacySkipsWhenTargetExists() throws {
+    let legacy = makeTempDir()
+    let fresh = makeTempDir()
+    defer { cleanup(legacy); cleanup(fresh) }
+    try FileManager.default.createDirectory(at: fresh, withIntermediateDirectories: true)
+    try Data("x".utf8).write(to: fresh.appendingPathComponent("keep.txt"))
+    let legacyPersistence = HistoryPersistence(directory: legacy)
+    try legacyPersistence.save([ClipboardEntry(id: UUID(), capturedAt: Date(), content: .text("old"))])
+
+    HistoryPersistence.migrateLegacyDirectory(from: legacy, to: fresh)
+
+    #expect(FileManager.default.fileExists(atPath: fresh.appendingPathComponent("keep.txt").path))
+}
+
+@Test func migrateLegacyWithoutSourceIsNoop() {
+    let legacy = makeTempDir() // 不创建
+    let fresh = makeTempDir() // 不创建
+    defer { cleanup(legacy); cleanup(fresh) }
+    HistoryPersistence.migrateLegacyDirectory(from: legacy, to: fresh)
+    #expect(!FileManager.default.fileExists(atPath: fresh.path))
 }
 
 // MARK: - 容量与清理
