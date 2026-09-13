@@ -1,42 +1,46 @@
 import AppKit
 import ClipboardMasterCore
+import Combine
 import Foundation
 
-/// 应用内自更新：GitHub Releases 查版本 → 拉起 scripts/update.sh（git checkout 新 tag →
-/// 重跑 install.sh → 自动重启）。历史数据在独立目录，更新全程不丢。
-/// 克隆丢失 / 工作区有改动时安全回退：打开 Releases 页让用户交给 Agent 处理。
-final class UpdateChecker {
+/// UI state is delivered on the main queue; checks and installs are single-flight.
+final class UpdateChecker: ObservableObject {
     static let repoSlug = "crawfordxx/clipboard-master"
     static let releasesURL = URL(string: "https://github.com/\(repoSlug)/releases/latest")!
 
-    enum State {
-        case idle
-        case checking
-        case upToDate
+    enum State: Equatable {
+        case idle, checking, upToDate
         case available(latest: String)
+        case installing(latest: String)
+        case manualInstall(latest: String)
+        case failed(message: String)
     }
 
-    private(set) var state: State = .idle {
-        didSet { DispatchQueue.main.async { [onStateChange] in onStateChange?() } }
+    @Published private(set) var state: State = .idle {
+        didSet { onStateChange?() }
     }
-
     var onStateChange: (() -> Void)?
-
     private let dataDirectory: URL
-    private let defaults = UserDefaults.standard
+    private let defaults: UserDefaults
+    private let version: String?
+    private let requestData: (URLRequest, @escaping (Data?, URLResponse?, Error?) -> Void) -> Void
     private let lastCheckKey = "ClipboardMaster.lastUpdateCheck"
+    private var updateProcess: Process?
 
-    init(dataDirectory: URL) {
+    init(dataDirectory: URL, defaults: UserDefaults = .standard, version: String? = nil,
+         requestData: @escaping (URLRequest, @escaping (Data?, URLResponse?, Error?) -> Void) -> Void = {
+             URLSession.shared.dataTask(with: $0, completionHandler: $1).resume()
+         }) {
         self.dataDirectory = dataDirectory
+        self.defaults = defaults
+        self.version = version
+        self.requestData = requestData
     }
-
-    // MARK: - 版本与来源
 
     var currentVersion: String {
-        (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "0.0.0"
+        version ?? (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "0.0.0"
     }
 
-    /// 安装时由 install.sh 写入的来源清单：{"repo": "...", "clonePath": "..."}
     var sourceClonePath: String? {
         let url = dataDirectory.appendingPathComponent("source.json")
         guard let data = try? Data(contentsOf: url),
@@ -45,40 +49,52 @@ final class UpdateChecker {
         return object["clonePath"] as? String
     }
 
-    // MARK: - 检查
-
-    /// 启动时调用：距上次检查超过 24h 才静默检查。
-    func checkAutomaticallyIfNeeded() {
-        let last = defaults.double(forKey: lastCheckKey)
-        let now = Date().timeIntervalSince1970
-        guard now - last > 86_400 else { return }
-        checkNow(silent: true)
+    var isBusy: Bool {
+        switch state {
+        case .checking, .installing: return true
+        default: return false
+        }
     }
 
-    func checkNow(silent: Bool = false) {
-        state = .checking
-        defaults.set(Date().timeIntervalSince1970, forKey: lastCheckKey)
+    func checkAutomaticallyIfNeeded() {
+        guard Date().timeIntervalSince1970 - defaults.double(forKey: lastCheckKey) > 86_400 else { return }
+        checkNow()
+    }
 
+    func checkNow() {
+        guard !isBusy else { return }
+        state = .checking
         var request = URLRequest(url: URL(string: "https://api.github.com/repos/\(Self.repoSlug)/releases/latest")!)
         request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
         request.setValue("ClipboardMaster", forHTTPHeaderField: "User-Agent")
-        request.timeoutInterval = 8
-
-        URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
-            guard let self else { return }
-            self.state = self.nextState(data: data, error: error)
-        }.resume()
+        request.timeoutInterval = 15
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        requestData(request) { [weak self] data, response, error in
+            DispatchQueue.main.async {
+                guard let self else { return }
+                self.state = self.nextState(data: data, response: response, error: error)
+                switch self.state {
+                case .available, .upToDate:
+                    self.defaults.set(Date().timeIntervalSince1970, forKey: self.lastCheckKey)
+                default: break // A failed request must not suppress retries for a day.
+                }
+            }
+        }
     }
 
-    private func nextState(data: Data?, error: Error?) -> State {
-        guard error == nil, let data,
+    private func nextState(data: Data?, response: URLResponse?, error: Error?) -> State {
+        guard error == nil else { return .failed(message: "连接失败，请检查网络后重试。") }
+        guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+            return .failed(message: "更新服务暂不可用，请稍后重试。")
+        }
+        guard let data,
               let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let tag = object["tag_name"] as? String
-        else { return .idle } // 网络失败：不打扰用户，下次再查
+              let tag = object["tag_name"] as? String,
+              tag.range(of: "^v?[0-9]+\\.[0-9]+\\.[0-9]+$", options: .regularExpression) != nil
+        else { return .failed(message: "版本信息不完整，请稍后重试。") }
         let latest = tag.hasPrefix("v") ? String(tag.dropFirst()) : tag
         return Versioning.isNewer(current: currentVersion, latest: latest)
-            ? .available(latest: latest)
-            : .upToDate
+            ? .available(latest: latest) : .upToDate
     }
 
     var availableVersion: String? {
@@ -86,46 +102,52 @@ final class UpdateChecker {
         return nil
     }
 
-    // MARK: - 执行更新
+    var hasUpdateLog: Bool { FileManager.default.fileExists(atPath: dataDirectory.appendingPathComponent("update.log").path) }
 
-    /// 拉起独立更新脚本（应用随后会被脚本重启，sh 进程独立存活）。
-    /// 无有效克隆时回退为打开 Releases 页。
+    func openReleasePage() { NSWorkspace.shared.open(Self.releasesURL) }
+    func openUpdateLog() { NSWorkspace.shared.open(dataDirectory.appendingPathComponent("update.log")) }
+
     func startUpdate() {
         guard let latest = availableVersion else { return }
         guard let clonePath = sourceClonePath,
-              FileManager.default.fileExists(atPath: clonePath + "/.git")
+              FileManager.default.fileExists(atPath: clonePath + "/.git"),
+              FileManager.default.fileExists(atPath: clonePath + "/scripts/update.sh")
         else {
-            NSWorkspace.shared.open(Self.releasesURL)
+            state = .manualInstall(latest: latest)
             return
         }
-
-        let script = clonePath + "/scripts/update.sh"
-        guard FileManager.default.fileExists(atPath: script) else {
-            NSWorkspace.shared.open(Self.releasesURL)
-            return
-        }
-
-        try? FileManager.default.createDirectory(at: dataDirectory, withIntermediateDirectories: true)
-        let logURL = dataDirectory.appendingPathComponent("update.log")
-        if !FileManager.default.fileExists(atPath: logURL.path) {
-            FileManager.default.createFile(atPath: logURL.path, contents: nil)
-        }
-        guard let logHandle = try? FileHandle(forWritingTo: logURL) else {
-            NSWorkspace.shared.open(Self.releasesURL)
-            return
-        }
-        _ = try? logHandle.seekToEnd()
-
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/sh")
-        process.arguments = [script, clonePath, latest]
-        process.standardOutput = logHandle
-        process.standardError = logHandle
         do {
+            try FileManager.default.createDirectory(at: dataDirectory, withIntermediateDirectories: true)
+            let logURL = dataDirectory.appendingPathComponent("update.log")
+            if !FileManager.default.fileExists(atPath: logURL.path) {
+                guard FileManager.default.createFile(atPath: logURL.path, contents: nil) else {
+                    throw CocoaError(.fileWriteUnknown)
+                }
+            }
+            let logHandle = try FileHandle(forWritingTo: logURL)
+            defer { try? logHandle.close() }
+            try logHandle.seekToEnd()
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/bin/bash")
+            process.arguments = [clonePath + "/scripts/update.sh", clonePath, latest]
+            process.standardOutput = logHandle
+            process.standardError = logHandle
+            process.terminationHandler = { [weak self] process in
+                DispatchQueue.main.async {
+                    self?.updateProcess = nil
+                    if process.terminationStatus != 0 {
+                        self?.state = .failed(message: process.terminationStatus == 2
+                            ? "源码有本地修改，未覆盖。请保留改动后再更新。"
+                            : "安装未完成，可查看日志后重试。")
+                    }
+                }
+            }
+            updateProcess = process
+            state = .installing(latest: latest)
             try process.run()
         } catch {
-            logHandle.closeFile()
-            NSWorkspace.shared.open(Self.releasesURL)
+            updateProcess = nil
+            state = .failed(message: "无法启动更新，请检查目录权限后重试。")
         }
     }
 }

@@ -1,10 +1,11 @@
 import AppKit
 import ClipboardMasterCore
 import ServiceManagement
+import SwiftUI
 
 /// 菜单栏控制器：状态栏图标、轮询定时器、历史存储与持久化、历史窗口的编排。
 /// 所有操作在主线程。
-final class StatusItemController: NSObject {
+final class StatusItemController: NSObject, NSPopoverDelegate {
     private let pasteboard: SystemPasteboard
     private let monitor: PasteboardMonitor
     private var store: HistoryStore
@@ -13,6 +14,9 @@ final class StatusItemController: NSObject {
     private var timer: Timer?
     private let historyWindow = HistoryWindowController()
     private var updateChecker: UpdateChecker!
+    private let popover = NSPopover()
+    private let panelModel = MenuPanelModel()
+    private var previousApplication: NSRunningApplication?
 
     override init() {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
@@ -36,6 +40,24 @@ final class StatusItemController: NSObject {
         }
         updateChecker = UpdateChecker(dataDirectory: directory)
         updateChecker.onStateChange = { [weak self] in self?.refreshMenu() }
+        popover.behavior = .transient
+        popover.delegate = self
+        popover.contentViewController = NSHostingController(rootView: MenuPanelView(
+            model: panelModel, updater: updateChecker,
+            onCopy: { [weak self] id in self?.copyEntryById(id); self?.popover.performClose(nil) },
+            onReveal: { [weak self] id in self?.popover.performClose(nil); self?.revealEntryById(id) },
+            onOpenHistory: { [weak self] in
+                self?.previousApplication = nil
+                self?.popover.performClose(nil)
+                self?.openHistoryWindow()
+            },
+            onClear: { [weak self] in self?.clearHistory() },
+            onToggleLogin: { [weak self] in self?.toggleLaunchAtLogin() },
+            onClose: { [weak self] in self?.popover.performClose(nil) },
+            onQuit: { [weak self] in self?.quit() }
+        ))
+        statusItem.button?.target = self
+        statusItem.button?.action = #selector(togglePopover)
         wireHistoryWindow()
         refreshMenu()
 
@@ -66,22 +88,29 @@ final class StatusItemController: NSObject {
 
     // MARK: - 菜单动作
 
-    /// 点击历史条目：复制回剪贴板（并吞掉自我变更，避免回环记录）。
-    @objc private func copyEntry(_ sender: NSMenuItem) {
-        guard let id = sender.representedObject as? UUID else { return }
-        copyEntryById(id)
+    @objc private func togglePopover() {
+        guard let button = statusItem.button else { return }
+        if popover.isShown { popover.performClose(nil) }
+        else {
+            previousApplication = NSWorkspace.shared.frontmostApplication
+            refreshMenu()
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+            NSApp.activate(ignoringOtherApps: true)
+            popover.contentViewController?.view.window?.makeKey()
+        }
+    }
+
+    func popoverDidClose(_ notification: Notification) {
+        defer { previousApplication = nil }
+        guard NSWorkspace.shared.frontmostApplication?.processIdentifier == ProcessInfo.processInfo.processIdentifier,
+              let previousApplication, !previousApplication.isTerminated else { return }
+        previousApplication.activate(options: [])
     }
 
     private func copyEntryById(_ id: UUID) {
         guard let entry = store.entry(id: id) else { return }
         pasteboard.write(entry.content)
         monitor.ignoreNextChange()
-    }
-
-    /// 在 Finder 中定位图片条目的落盘文件。
-    @objc private func revealEntry(_ sender: NSMenuItem) {
-        guard let id = sender.representedObject as? UUID else { return }
-        revealEntryById(id)
     }
 
     private func revealEntryById(_ id: UUID) {
@@ -110,7 +139,7 @@ final class StatusItemController: NSObject {
         refreshMenu()
     }
 
-    @objc private func toggleLaunchAtLogin(_ sender: NSMenuItem) {
+    private func toggleLaunchAtLogin() {
         let service = SMAppService.mainApp
         do {
             if service.status == .enabled {
@@ -119,49 +148,14 @@ final class StatusItemController: NSObject {
                 try service.register()
             }
         } catch {
+            panelModel.notice = "无法切换开机自启动，请从已安装的应用运行，并检查系统设置中的登录项。"
             logError("切换开机自启动失败（需从 .app 运行）", error)
         }
-        sender.state = service.status == .enabled ? .on : .off
+        panelModel.launchAtLogin = service.status == .enabled
     }
 
     @objc private func quit() {
         NSApp.terminate(nil)
-    }
-
-    // MARK: - 更新
-
-    @objc private func checkForUpdates() {
-        updateChecker.checkNow()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self] in
-            self?.reportUpdateResult()
-        }
-    }
-
-    private func reportUpdateResult() {
-        NSApp.activate(ignoringOtherApps: true)
-        let alert = NSAlert()
-        switch updateChecker.state {
-        case .available(let latest):
-            alert.messageText = "发现新版本 v\(latest)"
-            alert.informativeText = "当前 v\(updateChecker.currentVersion)。更新将自动完成并重启应用，历史数据不受影响。"
-            alert.addButton(withTitle: "立即更新")
-            alert.addButton(withTitle: "稍后")
-            if alert.runModal() == .alertFirstButtonReturn {
-                updateChecker.startUpdate()
-            }
-        case .upToDate:
-            alert.messageText = "已是最新版本"
-            alert.informativeText = "当前 v\(updateChecker.currentVersion)"
-            alert.runModal()
-        default:
-            alert.messageText = "检查更新失败"
-            alert.informativeText = "网络不可用或 GitHub 无法访问，请稍后再试。"
-            alert.runModal()
-        }
-    }
-
-    @objc private func startUpdate() {
-        updateChecker.startUpdate()
     }
 
     // MARK: - 私有
@@ -185,21 +179,8 @@ final class StatusItemController: NSObject {
     }
 
     private func refreshMenu() {
-        statusItem.menu = MenuFactory.makeMenu(
-            target: self,
-            copyAction: #selector(copyEntry(_:)),
-            clearAction: #selector(clearHistory),
-            launchAtLoginAction: #selector(toggleLaunchAtLogin(_:)),
-            quitAction: #selector(quit),
-            openWindowAction: #selector(openHistoryWindow),
-            checkUpdateAction: #selector(checkForUpdates),
-            startUpdateAction: #selector(startUpdate),
-            availableVersion: updateChecker?.availableVersion,
-            entries: store.entries,
-            launchAtLogin: SMAppService.mainApp.status == .enabled,
-            copyHandler: { [weak self] id in self?.copyEntryById(id) },
-            revealHandler: { [weak self] id in self?.revealEntryById(id) }
-        )
+        panelModel.entries = store.entries
+        panelModel.launchAtLogin = SMAppService.mainApp.status == .enabled
         historyWindow.refresh(store.entries)
     }
 

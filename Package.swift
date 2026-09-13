@@ -10,6 +10,7 @@ let package = Package(
             name: "ClipboardMasterApp",
             dependencies: ["ClipboardMasterCore"]
         ),
+        .testTarget(name: "ClipboardMasterAppTests", dependencies: ["ClipboardMasterApp"]),
         .testTarget(
             name: "ClipboardMasterCoreTests",
             dependencies: ["ClipboardMasterCore"]

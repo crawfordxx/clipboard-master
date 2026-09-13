@@ -1,0 +1,13 @@
+{
+  "mode": "built-in image_gen",
+  "assets": [
+    {
+      "file": "hero.png",
+      "prompt": "Use case: ads-marketing. Asset type: GitHub README hero banner for Clipboard Master, a native macOS/Windows clipboard history utility. Primary request: a refined, editorial 3D brand illustration, wide landscape about 2.5:1. Scene: soft off-white studio surface with cool blue light, generous breathing room. Subject: a tactile cobalt-blue clipboard with a brushed metal clip, several rounded frosted-glass cards holding abstract text lines and a small blue landscape thumbnail, arranged in a clean airy composition. Materials: satin blue, translucent glass, paper, subtle realistic contact shadows. Composition: clear title area and an elegant object grouping, balanced for a repository header. Text (verbatim): \"Clipboard Master\" only, crisp large dark sans-serif, no other words. Constraints: this is conceptual branding, not a screenshot. No fabricated app UI, no logos from other companies, no devices, no cloud or security promises, no watermark. Understated premium Mac utility aesthetic matching its blue clipboard icon."
+    },
+    {
+      "file": "local-history.png",
+      "prompt": "Use case: stylized-concept. Asset type: supporting README illustration for Clipboard Master local clipboard workflow. Primary request: a polished minimal 3D editorial illustration showing copied text and image cards staying on a person's own desktop, about 16:9. Subject: a silver laptop on a clean light surface beside a small cobalt-blue clipboard tray; three frosted cards with abstract text lines and a blue mountain thumbnail flowing neatly toward the tray, a restrained visual metaphor for local history and easy retrieval. Style: tactile satin objects, translucent glass, subtle blue accents, soft natural studio light, warm-neutral white background, refined realistic contact shadows. Composition: compact centered subject with generous negative space. Constraints: no readable words, no UI screenshot, no cloud/network connections, no lock/shield/encryption claims, no brand logos, no watermark. Same quiet blue and silver visual language as a native clipboard utility."
+    }
+  ]
+}
