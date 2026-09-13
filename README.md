@@ -185,7 +185,7 @@ swift test
 dotnet test windows/ClipboardMaster.Core.Tests
 ```
 
-当前 macOS 测试为 **49 项核心测试 + 8 项更新器测试**。更新器测试使用模拟网络响应和临时脚本，不会安装应用或访问真实用户历史；CI 还会测试 Windows 核心库并构建托盘应用。
+当前 macOS 测试为 **49 项核心测试 + 8 项更新器测试 + 1 项浮层尺寸回归测试**。更新器测试使用模拟网络响应和临时脚本，不会安装应用或访问真实用户历史；CI 还会测试 Windows 核心库并构建托盘应用。
 
 <details>
 <summary><strong>项目结构</strong></summary>

@@ -43,7 +43,11 @@ import Foundation
     )
     let tip = PreviewFormatter.tooltip(for: entry)
     #expect(tip.contains("hello"))
-    #expect(tip.contains("1970"))
+    // Short dates may use two-digit years depending on the system locale.
+    let formatter = DateFormatter()
+    formatter.dateStyle = .short
+    formatter.timeStyle = .medium
+    #expect(tip.hasPrefix(formatter.string(from: entry.capturedAt) + "\n"))
 }
 
 @Test func tooltipTruncatesLongText() {

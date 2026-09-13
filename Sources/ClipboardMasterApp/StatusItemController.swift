@@ -94,10 +94,18 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         else {
             previousApplication = NSWorkspace.shared.frontmostApplication
             refreshMenu()
+            Self.preparePopoverForDisplay(popover)
             popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
             NSApp.activate(ignoringOtherApps: true)
             popover.contentViewController?.view.window?.makeKey()
         }
+    }
+
+    /// Position using the SwiftUI content size, not NSPopover's 320×320 fallback.
+    static func preparePopoverForDisplay(_ popover: NSPopover) {
+        guard let view = popover.contentViewController?.view else { return }
+        view.layoutSubtreeIfNeeded()
+        popover.contentSize = view.fittingSize
     }
 
     func popoverDidClose(_ notification: Notification) {
