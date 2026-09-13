@@ -19,6 +19,8 @@ echo "🔨 构建中..."
 ./scripts/build-app.sh
 
 DEST="/Applications/ClipboardMaster.app"
+# Do not leave an old process mapped to the replaced executable. Respect unsaved drafts.
+swift scripts/quit-running-app.swift "$DEST"
 rm -rf "$DEST"
 cp -R dist/ClipboardMaster.app "$DEST"
 
