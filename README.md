@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/readme/hero.png" alt="Clipboard Master：蓝色剪贴板与文字、图片卡片的品牌插画" width="960">
+  <img src="assets/readme/pony-hero.png" alt="Clipboard Master：抱着剪贴板的小马管家" width="960">
 </p>
 
 <h1 align="center">Clipboard Master</h1>
@@ -26,6 +26,14 @@
 复制了一段文字，又复制了另一段，前一段不必重新找。Clipboard Master 把最近复制的文字和图片留在菜单栏或托盘里，点击一条即可重新复制。
 
 **不需要账号，不使用 Electron，不上传剪贴板内容。** macOS 使用 Swift / AppKit / SwiftUI，Windows 使用 C# / WinForms。
+
+## 产品宣传片
+
+[![观看 Clipboard Master 小马管家宣传片](assets/readme/promo-poster.png)](https://github.com/crawfordxx/clipboard-master/blob/main/assets/readme/clipboard-master-promo.mp4)
+
+<p align="center"><strong>小马管家，替你收好每一次复制。</strong><br><sub>约37秒 · 点击封面播放 · 原生界面使用虚构示例记录</sub></p>
+
+[带配乐版](assets/readme/clipboard-master-promo.mp4) · [仅音效版](assets/readme/clipboard-master-promo-nobgm.mp4) · [视频工程与素材说明](promo/README.md)
 
 ## 界面预览
 
@@ -97,7 +105,7 @@ powershell -ExecutionPolicy Bypass -File install.ps1 -Launch
 ## 本机存储，不做云端同步
 
 <p align="center">
-  <img src="assets/readme/local-history.png" alt="本机历史概念插画：文字与图片卡片从笔记本归入桌面收纳盒" width="720" loading="lazy">
+  <img src="assets/readme/pony-local-history.png" alt="小马管家抱着剪贴板，整理文字与图片历史的概念插画" width="720" loading="lazy">
 </p>
 
 - 剪贴板历史保存在本机，不发送到服务器；没有账户和云同步功能。

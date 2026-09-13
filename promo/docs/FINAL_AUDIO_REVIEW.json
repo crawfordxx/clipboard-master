@@ -1,0 +1,592 @@
+{
+  "status": "PASS",
+  "inputs": {
+    "bgm": {
+      "path": "out/clipboard-master-promo.mp4",
+      "sha256": "0353189939bae1040aa053d9d880d205393a5c8b7e44b5d6ec02dd63ec01680d",
+      "decoded_pcm_f32le_stereo48k_sha256": "43663d57419466be64a5741acb81733f208359e23d703d9cc68426660e7d8225"
+    },
+    "nobgm": {
+      "path": "out/clipboard-master-promo-nobgm.mp4",
+      "sha256": "ffa459b1f4b0a2ee13a19494de7e38826b8f7c917d6f1062d11dd7d9aa7eb6cf",
+      "decoded_pcm_f32le_stereo48k_sha256": "bbc24775cdb9dfbcc291c7bd24a207a7bda226a75a81568d71d2db504d6efb8e"
+    }
+  },
+  "timeline_sha256": "472760b7588c743be9d799faed58b41669ac5274cab3d061a921965e1f7b9c55",
+  "pipeline": {
+    "fps": 30,
+    "audio_codec": "AAC LC",
+    "sample_rate": 48000,
+    "channels": 2,
+    "container": "MP4",
+    "declared_output_audio_offset_frames": 1.28,
+    "bgm_baked_advance_samples": 2048,
+    "bgm_start_frame": 0,
+    "bgm_gain": 0.24
+  },
+  "method": "Actual48kHzstereo FFmpeg decoded PCM; scipyFFT normalized cross-correlation against source clips within±0.2s expected starts. Source-energy peak lag added to measured source start. Master BGM templating maps storedsource attacks to actualoutput; source unchanged. Both-version SFX compared after subtracting known alignedBGM*.24 shifted2048samples; independent AAC mix encoding means not byteidentical.",
+  "sfx_probes": [
+    {
+      "index": 0,
+      "src": "audio/whoosh-fast.mp3",
+      "note": "single pony card rises",
+      "from_frame": 25,
+      "target_frame": 48,
+      "source_peak_lag_sec": 0.7215646258503401,
+      "dry_measured_start_sec": 0.8756666666666667,
+      "pipeline_lag_frames": 1.27,
+      "source_correlation_dry": 0.5225921339215015,
+      "actual_peak_frame": 47.916938775510204,
+      "target_peak_residual_frames": -0.08306122448979636,
+      "bgm_removed_mix_measured_start_sec": 0.8756666666666667,
+      "source_correlation_mix_bgm_removed": 0.5211413196998916,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9983613188140846,
+      "nonoverlap_confirmation": {
+        "duration_sec": 0.28,
+        "normalized_correlation": 0.9996396529882382,
+        "measured_start_sec": 0.8756666666666667,
+        "difference_from_full_source_probe_samples": 0
+      }
+    },
+    {
+      "index": 1,
+      "src": "audio/shimmer-sparkle-sweep.mp3",
+      "note": "single perimeter beam begins",
+      "from_frame": 35,
+      "target_frame": 64,
+      "source_peak_lag_sec": 0.9131519274376417,
+      "dry_measured_start_sec": 1.2096666666666667,
+      "pipeline_lag_frames": 1.2899999999999978,
+      "source_correlation_dry": 0.8547936071989212,
+      "actual_peak_frame": 63.68455782312925,
+      "target_peak_residual_frames": -0.3154421768707465,
+      "bgm_removed_mix_measured_start_sec": 1.2096666666666667,
+      "source_correlation_mix_bgm_removed": 0.854040521400431,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9979584081329659
+    },
+    {
+      "index": 2,
+      "src": "audio/swoosh-quick.mp3",
+      "note": "pony returns to its slot",
+      "from_frame": 120,
+      "target_frame": 130,
+      "source_peak_lag_sec": 0.29564625850340137,
+      "dry_measured_start_sec": 4.042666666666666,
+      "pipeline_lag_frames": 1.2799999999999923,
+      "source_correlation_dry": 0.9998806473705752,
+      "actual_peak_frame": 130.14938775510203,
+      "target_peak_residual_frames": 0.14938775510202618,
+      "bgm_removed_mix_measured_start_sec": 4.042666666666666,
+      "source_correlation_mix_bgm_removed": 0.998991773207049,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9990088090050274
+    },
+    {
+      "index": 3,
+      "src": "audio/transition-soft.mp3",
+      "note": "native history reveal",
+      "from_frame": 163,
+      "target_frame": 178,
+      "source_peak_lag_sec": 0.45387755102040817,
+      "dry_measured_start_sec": 5.475666666666666,
+      "pipeline_lag_frames": 1.26999999999998,
+      "source_correlation_dry": 0.9997903699843046,
+      "actual_peak_frame": 177.88632653061222,
+      "target_peak_residual_frames": -0.113673469387777,
+      "bgm_removed_mix_measured_start_sec": 5.475666666666666,
+      "source_correlation_mix_bgm_removed": 0.9985894133226909,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9974573885901157
+    },
+    {
+      "index": 4,
+      "src": "audio/transition-soft.mp3",
+      "note": "move into search",
+      "from_frame": 329,
+      "target_frame": 344,
+      "source_peak_lag_sec": 0.45387755102040817,
+      "dry_measured_start_sec": 11.009666666666666,
+      "pipeline_lag_frames": 1.2899999999999778,
+      "source_correlation_dry": 0.9998224067642366,
+      "actual_peak_frame": 343.9063265306122,
+      "target_peak_residual_frames": -0.0936734693877952,
+      "bgm_removed_mix_measured_start_sec": 11.009666666666666,
+      "source_correlation_mix_bgm_removed": 0.9980582957411424,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9969384782418312
+    },
+    {
+      "index": 5,
+      "src": "audio/keyboard.mp3",
+      "note": "only the search typing interval",
+      "from_frame": 371,
+      "target_frame": 376,
+      "source_peak_lag_sec": 0.12077097505668934,
+      "dry_measured_start_sec": 12.409666666666666,
+      "pipeline_lag_frames": 1.2899999999999778,
+      "source_correlation_dry": 0.9981362555513061,
+      "actual_peak_frame": 375.9131292517007,
+      "target_peak_residual_frames": -0.08687074829930452,
+      "bgm_removed_mix_measured_start_sec": 12.409666666666666,
+      "source_correlation_mix_bgm_removed": 0.9974954826878722,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9965375953798582
+    },
+    {
+      "index": 6,
+      "src": "audio/click-camera.mp3",
+      "note": "click matching clipboard result",
+      "from_frame": 455,
+      "target_frame": 462,
+      "source_peak_lag_sec": 0.19383219954648526,
+      "dry_measured_start_sec": 15.209666666666667,
+      "pipeline_lag_frames": 1.2900000000000311,
+      "source_correlation_dry": 0.994281927106768,
+      "actual_peak_frame": 462.1049659863946,
+      "target_peak_residual_frames": 0.10496598639457488,
+      "bgm_removed_mix_measured_start_sec": 15.209666666666667,
+      "source_correlation_mix_bgm_removed": 0.9921010882782861,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9939157071467305
+    },
+    {
+      "index": 7,
+      "src": "audio/swoosh-quick.mp3",
+      "note": "image detail handoff",
+      "from_frame": 556,
+      "target_frame": 566,
+      "source_peak_lag_sec": 0.29564625850340137,
+      "dry_measured_start_sec": 18.575666666666667,
+      "pipeline_lag_frames": 1.2699999999999534,
+      "source_correlation_dry": 0.9998545332766315,
+      "actual_peak_frame": 566.139387755102,
+      "target_peak_residual_frames": 0.13938775510200685,
+      "bgm_removed_mix_measured_start_sec": 18.575666666666667,
+      "source_correlation_mix_bgm_removed": 0.9995526845751949,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9994909677168305
+    },
+    {
+      "index": 8,
+      "src": "audio/click-camera.mp3",
+      "note": "check update result confirmed",
+      "from_frame": 706,
+      "target_frame": 713,
+      "source_peak_lag_sec": 0.19383219954648526,
+      "dry_measured_start_sec": 23.575666666666667,
+      "pipeline_lag_frames": 1.2699999999999534,
+      "source_correlation_dry": 0.9947184685658511,
+      "actual_peak_frame": 713.0849659863945,
+      "target_peak_residual_frames": 0.08496598639453623,
+      "bgm_removed_mix_measured_start_sec": 23.575666666666667,
+      "source_correlation_mix_bgm_removed": 0.9931274645101683,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9950819271634824
+    },
+    {
+      "index": 9,
+      "src": "audio/transition-soft.mp3",
+      "note": "local storage promise",
+      "from_frame": 772,
+      "target_frame": 787,
+      "source_peak_lag_sec": 0.45387755102040817,
+      "dry_measured_start_sec": 25.775666666666666,
+      "pipeline_lag_frames": 1.2699999999999534,
+      "source_correlation_dry": 0.9997856546949124,
+      "actual_peak_frame": 786.8863265306122,
+      "target_peak_residual_frames": -0.113673469387777,
+      "bgm_removed_mix_measured_start_sec": 25.775666666666666,
+      "source_correlation_mix_bgm_removed": 0.9985955502004518,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9976034649767883
+    },
+    {
+      "index": 10,
+      "src": "audio/riser-soft.mp3",
+      "note": "outro gathering builds",
+      "from_frame": 896,
+      "target_frame": 928,
+      "source_peak_lag_sec": 1.0351473922902494,
+      "dry_measured_start_sec": 29.909666666666666,
+      "pipeline_lag_frames": 1.2899999999999778,
+      "source_correlation_dry": 0.19689168099718785,
+      "actual_peak_frame": 928.3444217687074,
+      "target_peak_residual_frames": 0.34442176870743424,
+      "bgm_removed_mix_measured_start_sec": 29.909666666666666,
+      "source_correlation_mix_bgm_removed": 0.19709011860385198,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9997302517372617,
+      "nonoverlap_confirmation": {
+        "duration_sec": 0.7,
+        "normalized_correlation": 0.4381865542587933,
+        "measured_start_sec": 29.909666666666666,
+        "difference_from_full_source_probe_samples": 0
+      }
+    },
+    {
+      "index": 11,
+      "src": "audio/impact-deep-whoosh.mp3",
+      "note": "wordmark stage peak",
+      "from_frame": 922,
+      "target_frame": 942,
+      "source_peak_lag_sec": 0.629297052154195,
+      "dry_measured_start_sec": 30.775666666666666,
+      "pipeline_lag_frames": 1.2699999999999534,
+      "source_correlation_dry": 0.9399642947614506,
+      "actual_peak_frame": 942.1489115646258,
+      "target_peak_residual_frames": 0.14891156462579147,
+      "bgm_removed_mix_measured_start_sec": 30.775666666666666,
+      "source_correlation_mix_bgm_removed": 0.9397439215175594,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9996411419016236
+    },
+    {
+      "index": 12,
+      "src": "audio/shimmer-sparkle-sweep.mp3",
+      "note": "outro rule and CTA settle",
+      "from_frame": 949,
+      "target_frame": 978,
+      "source_peak_lag_sec": 0.9131519274376417,
+      "dry_measured_start_sec": 31.675666666666668,
+      "pipeline_lag_frames": 1.27000000000006,
+      "source_correlation_dry": 0.9099293520093316,
+      "actual_peak_frame": 977.6645578231294,
+      "target_peak_residual_frames": -0.3354421768706288,
+      "bgm_removed_mix_measured_start_sec": 31.675666666666668,
+      "source_correlation_mix_bgm_removed": 0.910010034803333,
+      "versions_start_difference_samples": 0,
+      "versions_waveform_correlation_bgm_removed": 0.9983885984713724
+    }
+  ],
+  "bgm_master_probes": [
+    {
+      "source_master_start_sec": 2.5,
+      "measured_start_sec": 2.5,
+      "residual_sec": 0.0,
+      "residual_frames": 0.0,
+      "correlation": 0.9934360649150397
+    },
+    {
+      "source_master_start_sec": 8,
+      "measured_start_sec": 8.0,
+      "residual_sec": 0.0,
+      "residual_frames": 0.0,
+      "correlation": 0.9999387441244263
+    },
+    {
+      "source_master_start_sec": 14,
+      "measured_start_sec": 14.0,
+      "residual_sec": 0.0,
+      "residual_frames": 0.0,
+      "correlation": 0.9999285175799617
+    },
+    {
+      "source_master_start_sec": 20,
+      "measured_start_sec": 20.0,
+      "residual_sec": 0.0,
+      "residual_frames": 0.0,
+      "correlation": 0.9999314031545976
+    },
+    {
+      "source_master_start_sec": 26,
+      "measured_start_sec": 26.0,
+      "residual_sec": 0.0,
+      "residual_frames": 0.0,
+      "correlation": 0.9722009870525611
+    },
+    {
+      "source_master_start_sec": 32,
+      "measured_start_sec": 32.0,
+      "residual_sec": 0.0,
+      "residual_frames": 0.0,
+      "correlation": 0.9559919305181352
+    }
+  ],
+  "cut_reports": [
+    {
+      "shot": "history",
+      "beat": 12,
+      "visual_frame": 166,
+      "source_attack_sec": 5.54080760509332,
+      "local_master_correlation": 0.9437345360550685,
+      "local_output_residual_sec": 0.0,
+      "measured_output_attack_sec": 5.54080760509332,
+      "visual_minus_attack_frames": -0.22422815279961483,
+      "visual_minus_attack_ms": -7.474271759987161,
+      "frame_quantization_ms": -7.428205128205079
+    },
+    {
+      "shot": "search",
+      "beat": 24,
+      "visual_frame": 332,
+      "source_attack_sec": 11.079265654979942,
+      "local_master_correlation": 0.9581357136290354,
+      "local_output_residual_sec": -2.083333333224857e-05,
+      "measured_output_attack_sec": 11.07924482164661,
+      "visual_minus_attack_frames": -0.3773446493982924,
+      "visual_minus_attack_ms": -12.57815497994308,
+      "frame_quantization_ms": -12.556410256411965
+    },
+    {
+      "shot": "images",
+      "beat": 40,
+      "visual_frame": 554,
+      "source_attack_sec": 18.46366474795046,
+      "local_master_correlation": 0.8987581020539172,
+      "local_output_residual_sec": -2.0833333330472215e-05,
+      "measured_output_attack_sec": 18.46364391461713,
+      "visual_minus_attack_frames": 0.09068256148605514,
+      "visual_minus_attack_ms": 3.022752049535171,
+      "frame_quantization_ms": 2.828205128199812
+    },
+    {
+      "shot": "updates",
+      "beat": 48,
+      "visual_frame": 665,
+      "source_attack_sec": 22.156181754753185,
+      "local_master_correlation": 0.9998989228254291,
+      "local_output_residual_sec": 0.0,
+      "measured_output_attack_sec": 22.156181754753185,
+      "visual_minus_attack_frames": 0.3145473574044999,
+      "visual_minus_attack_ms": 10.48491191348333,
+      "frame_quantization_ms": 10.520512820509254
+    },
+    {
+      "shot": "local",
+      "beat": 56,
+      "visual_frame": 775,
+      "source_attack_sec": 25.848472004186284,
+      "local_master_correlation": 0.9452203450806449,
+      "local_output_residual_sec": 3.552713678800501e-15,
+      "measured_output_attack_sec": 25.848472004186288,
+      "visual_minus_attack_frames": -0.4541601255886718,
+      "visual_minus_attack_ms": -15.138670852955727,
+      "frame_quantization_ms": -15.12051282051985
+    },
+    {
+      "shot": "outro",
+      "beat": 64,
+      "visual_frame": 886,
+      "source_attack_sec": 29.540739577882434,
+      "local_master_correlation": 0.9999050810610002,
+      "local_output_residual_sec": 0.0,
+      "measured_output_attack_sec": 29.540739577882434,
+      "visual_minus_attack_frames": -0.22218733647296318,
+      "visual_minus_attack_ms": -7.406244549098773,
+      "frame_quantization_ms": -7.428205128210408
+    }
+  ],
+  "peak_reports": [
+    {
+      "version": "bgm",
+      "sample_peak_dbfs": -7.495565891265869,
+      "clipped_samples": 0,
+      "decoded_duration_sec": 36.992
+    },
+    {
+      "version": "nobgm",
+      "sample_peak_dbfs": -9.580141067504883,
+      "clipped_samples": 0,
+      "decoded_duration_sec": 36.992
+    }
+  ],
+  "max_abs_sfx_target_peak_error_frames": 0.34442176870743424,
+  "max_abs_cut_error_frames": 0.4541601255886718,
+  "max_abs_bgm_residual_frames": 0.0,
+  "min_sfx_waveform_parity_correlation": 0.9939157071467305,
+  "max_versions_sfx_start_difference_samples": 0,
+  "audition_scope": "Technical decoded-waveform review; no OS audio playback or subjective full-mix listening claim.",
+  "loudness_measurements": {
+    "method": "FFmpeg loudnorm input-only readings, null sink; no normalization applied",
+    "bgm": {
+      "integrated_lufs": -23.3,
+      "true_peak_dbtp": -7.46,
+      "lra_lu": 4.7
+    },
+    "nobgm": {
+      "integrated_lufs": -28.3,
+      "true_peak_dbtp": -9.58,
+      "lra_lu": 16.3
+    }
+  },
+  "previous_v2_inputs": {
+    "bgm": {
+      "path": "out/clipboard-master-promo.mp4",
+      "sha256": "6324b52e3931dd48c5624e02872ed79548366aac3cb122feee389ba94e8cbdb7"
+    },
+    "nobgm": {
+      "path": "out/clipboard-master-promo-nobgm.mp4",
+      "sha256": "00c0a172b45eb22531d1f124f63cb76266798c6408843fc459e75cc4690c0cf3"
+    }
+  },
+  "v3_remux_recheck": {
+    "status": "PASS",
+    "no_bgm_source": "out/nobgm-rendered.mp4",
+    "no_bgm_source_sha256": "5190c5b4a52ee700b3cf4aca0dc093c42857e560eb6c4c3aacd2bfcd07c34d1f",
+    "no_bgm_remux_decoded_pcm_identical": true,
+    "no_bgm_decoded_sha256": "bbc24775cdb9dfbcc291c7bd24a207a7bda226a75a81568d71d2db504d6efb8e",
+    "decoded_bytes": 14204928,
+    "sfx_probe_checks": [
+      {
+        "src": "audio/whoosh-fast.mp3",
+        "from_frame": 25,
+        "measured_start_sec": 0.8756666666666667,
+        "normalized_correlation": 0.5225921339215015,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": -0.08306122448979636
+      },
+      {
+        "src": "audio/shimmer-sparkle-sweep.mp3",
+        "from_frame": 35,
+        "measured_start_sec": 1.2096666666666667,
+        "normalized_correlation": 0.8547936071989212,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": -0.3154421768707465
+      },
+      {
+        "src": "audio/swoosh-quick.mp3",
+        "from_frame": 120,
+        "measured_start_sec": 4.042666666666666,
+        "normalized_correlation": 0.9998806473705752,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": 0.14938775510202618
+      },
+      {
+        "src": "audio/transition-soft.mp3",
+        "from_frame": 163,
+        "measured_start_sec": 5.475666666666666,
+        "normalized_correlation": 0.9997903699843046,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": -0.113673469387777
+      },
+      {
+        "src": "audio/transition-soft.mp3",
+        "from_frame": 329,
+        "measured_start_sec": 11.009666666666666,
+        "normalized_correlation": 0.9998224067642366,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": -0.0936734693877952
+      },
+      {
+        "src": "audio/keyboard.mp3",
+        "from_frame": 371,
+        "measured_start_sec": 12.409666666666666,
+        "normalized_correlation": 0.9981362555513061,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": -0.08687074829930452
+      },
+      {
+        "src": "audio/click-camera.mp3",
+        "from_frame": 455,
+        "measured_start_sec": 15.209666666666667,
+        "normalized_correlation": 0.994281927106768,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": 0.10496598639457488
+      },
+      {
+        "src": "audio/swoosh-quick.mp3",
+        "from_frame": 556,
+        "measured_start_sec": 18.575666666666667,
+        "normalized_correlation": 0.9998545332766315,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": 0.13938775510200685
+      },
+      {
+        "src": "audio/click-camera.mp3",
+        "from_frame": 706,
+        "measured_start_sec": 23.575666666666667,
+        "normalized_correlation": 0.9947184685658511,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": 0.08496598639453623
+      },
+      {
+        "src": "audio/transition-soft.mp3",
+        "from_frame": 772,
+        "measured_start_sec": 25.775666666666666,
+        "normalized_correlation": 0.9997856546949124,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": -0.113673469387777
+      },
+      {
+        "src": "audio/riser-soft.mp3",
+        "from_frame": 896,
+        "measured_start_sec": 29.909666666666666,
+        "normalized_correlation": 0.19689168099718785,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": 0.34442176870743424
+      },
+      {
+        "src": "audio/impact-deep-whoosh.mp3",
+        "from_frame": 922,
+        "measured_start_sec": 30.775666666666666,
+        "normalized_correlation": 0.9399642947614506,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": 0.14891156462579147
+      },
+      {
+        "src": "audio/shimmer-sparkle-sweep.mp3",
+        "from_frame": 949,
+        "measured_start_sec": 31.675666666666668,
+        "normalized_correlation": 0.9099293520093316,
+        "difference_vs_v2_probe_samples": 0,
+        "peak_target_residual_frames": -0.3354421768706288
+      }
+    ],
+    "bgm_probe_checks": [
+      {
+        "source_master_start_sec": 2.5,
+        "measured_start_sec": 2.5,
+        "residual_frames": 0.0,
+        "normalized_correlation": 0.9934360649150397
+      },
+      {
+        "source_master_start_sec": 8,
+        "measured_start_sec": 8.0,
+        "residual_frames": 0.0,
+        "normalized_correlation": 0.9999387441244263
+      },
+      {
+        "source_master_start_sec": 14,
+        "measured_start_sec": 14.0,
+        "residual_frames": 0.0,
+        "normalized_correlation": 0.9999285175799617
+      },
+      {
+        "source_master_start_sec": 20,
+        "measured_start_sec": 20.0,
+        "residual_frames": 0.0,
+        "normalized_correlation": 0.9999314031545976
+      },
+      {
+        "source_master_start_sec": 26,
+        "measured_start_sec": 26.0,
+        "residual_frames": 0.0,
+        "normalized_correlation": 0.9722009870525611
+      },
+      {
+        "source_master_start_sec": 32,
+        "measured_start_sec": 32.0,
+        "residual_frames": 0.0,
+        "normalized_correlation": 0.9559919305181352
+      }
+    ],
+    "peak_reports": [
+      {
+        "version": "bgm",
+        "sample_peak_dbfs": -7.495565891265869,
+        "clipped_samples": 0
+      },
+      {
+        "version": "nobgm",
+        "sample_peak_dbfs": -9.580141067504883,
+        "clipped_samples": 0
+      }
+    ],
+    "max_sfx_start_change_from_v2_samples": 0,
+    "max_target_peak_residual_frames": 0.34442176870743424,
+    "max_bgm_residual_frames": 0.0,
+    "note": "Visual-only v3 re-render; noBGM audio verified byte-identical to separately rendered noBGM decoded PCM after remux. Earlier v2 file hashes retained; all13finalSFX start probes and sixBGM probes remeasured."
+  }
+}

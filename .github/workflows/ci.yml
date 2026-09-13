@@ -28,3 +28,20 @@ jobs:
         run: dotnet test windows/ClipboardMaster.Core.Tests
       - name: Build tray app
         run: dotnet build windows/ClipboardMaster.App -c Release
+
+  promo:
+    name: Promo (timeline and types)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: promo
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: promo/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck

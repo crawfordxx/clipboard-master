@@ -73,10 +73,18 @@ struct MenuPanelView: View {
 
     private var header: some View {
         HStack(spacing: 10) {
-            Image(systemName: "doc.on.clipboard.fill")
-                .font(.system(size: 19, weight: .medium)).foregroundStyle(.tint)
-                .frame(width: 38, height: 38)
-                .background(.tint.opacity(0.1), in: RoundedRectangle(cornerRadius: 11))
+            if let url = Bundle.main.url(forResource: "BrandMark", withExtension: "png"),
+               let image = NSImage(contentsOf: url) {
+                Image(nsImage: image).resizable().scaledToFit()
+                    .frame(width: 38, height: 38)
+                    .clipShape(RoundedRectangle(cornerRadius: 11))
+                    .accessibilityHidden(true)
+            } else {
+                Image(systemName: "doc.on.clipboard.fill")
+                    .font(.system(size: 19, weight: .medium)).foregroundStyle(.tint)
+                    .frame(width: 38, height: 38)
+                    .background(.tint.opacity(0.1), in: RoundedRectangle(cornerRadius: 11))
+            }
             VStack(alignment: .leading, spacing: 3) {
                 Text("Clipboard Master").font(.system(size: 15, weight: .semibold))
                 Text("复制过的，随时找回").font(.system(size: 11)).foregroundStyle(.secondary)

@@ -12,6 +12,7 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 
 cp .build/release/ClipboardMasterApp "$APP/Contents/MacOS/ClipboardMasterApp"
 cp VERSION "$APP/Contents/Resources/VERSION"
+cp assets/brand/pony.png "$APP/Contents/Resources/BrandMark.png"
 
 # 由 assets/icon.png 生成多尺寸 .icns
 ICONSET="dist/AppIcon.iconset"

@@ -1,0 +1,1356 @@
+{
+  "captures": [
+    {
+      "name": "menu-light-filled",
+      "nativeControls": [
+        {
+          "box": [
+            47.5,
+            76,
+            296.5,
+            16
+          ],
+          "class": "SwiftUI.AppKitTextField",
+          "text": ""
+        },
+        {
+          "box": [
+            16,
+            140,
+            336,
+            248
+          ],
+          "class": "SwiftUI.HostingScrollView",
+          "text": ""
+        }
+      ],
+      "path": "textures/menu-light-filled.png",
+      "pixelSize": [
+        1472,
+        2548
+      ],
+      "pointSize": [
+        368,
+        637
+      ],
+      "sha256": "38809c16c7fc174ea27aa2f97418722d4b83dc5de5659c67a779880dda7505f8"
+    },
+    {
+      "name": "menu-dark-filled",
+      "nativeControls": [
+        {
+          "box": [
+            47.5,
+            76,
+            296.5,
+            16
+          ],
+          "class": "SwiftUI.AppKitTextField",
+          "text": ""
+        },
+        {
+          "box": [
+            16,
+            140,
+            336,
+            248
+          ],
+          "class": "SwiftUI.HostingScrollView",
+          "text": ""
+        }
+      ],
+      "path": "textures/menu-dark-filled.png",
+      "pixelSize": [
+        1472,
+        2548
+      ],
+      "pointSize": [
+        368,
+        637
+      ],
+      "sha256": "6f616196bcf398c61a6c7ae99f49889fce99d43c81d7d6e6ed372112e65158a5"
+    },
+    {
+      "name": "menu-light-empty",
+      "nativeControls": [
+        {
+          "box": [
+            47.5,
+            76,
+            296.5,
+            16
+          ],
+          "class": "SwiftUI.AppKitTextField",
+          "text": ""
+        },
+        {
+          "box": [
+            16,
+            140,
+            336,
+            248
+          ],
+          "class": "SwiftUI.HostingScrollView",
+          "text": ""
+        }
+      ],
+      "path": "textures/menu-light-empty.png",
+      "pixelSize": [
+        1472,
+        2548
+      ],
+      "pointSize": [
+        368,
+        637
+      ],
+      "sha256": "3f7ca178ac4622f6d00425b505ed5215ad8cbe53e5d57fc2d58c9a2f98db17e9"
+    },
+    {
+      "name": "menu-dark-empty",
+      "nativeControls": [
+        {
+          "box": [
+            47.5,
+            76,
+            296.5,
+            16
+          ],
+          "class": "SwiftUI.AppKitTextField",
+          "text": ""
+        },
+        {
+          "box": [
+            16,
+            140,
+            336,
+            248
+          ],
+          "class": "SwiftUI.HostingScrollView",
+          "text": ""
+        }
+      ],
+      "path": "textures/menu-dark-empty.png",
+      "pixelSize": [
+        1472,
+        2548
+      ],
+      "pointSize": [
+        368,
+        637
+      ],
+      "sha256": "9292004e05e53e67bf485fcc763ed763cdcc65d56eb09e20031bb9f50d8897de"
+    },
+    {
+      "name": "menu-checking",
+      "nativeControls": [
+        {
+          "box": [
+            47.5,
+            76,
+            296.5,
+            16
+          ],
+          "class": "SwiftUI.AppKitTextField",
+          "text": ""
+        },
+        {
+          "box": [
+            16,
+            140,
+            336,
+            248
+          ],
+          "class": "SwiftUI.HostingScrollView",
+          "text": ""
+        }
+      ],
+      "path": "textures/menu-checking.png",
+      "pixelSize": [
+        1472,
+        2548
+      ],
+      "pointSize": [
+        368,
+        637
+      ],
+      "sha256": "2293349cca7155f4c00f9676d14bea38cba3f95be015371740fd4e6596fd9ee7"
+    },
+    {
+      "name": "menu-current",
+      "nativeControls": [
+        {
+          "box": [
+            47.5,
+            76,
+            296.5,
+            16
+          ],
+          "class": "SwiftUI.AppKitTextField",
+          "text": ""
+        },
+        {
+          "box": [
+            16,
+            140,
+            336,
+            248
+          ],
+          "class": "SwiftUI.HostingScrollView",
+          "text": ""
+        }
+      ],
+      "path": "textures/menu-current.png",
+      "pixelSize": [
+        1472,
+        2548
+      ],
+      "pointSize": [
+        368,
+        637
+      ],
+      "sha256": "15d49ceb88f633915fc2e62c518082a907a3dc428de950380d3a753b0f1b1007"
+    },
+    {
+      "name": "menu-search",
+      "nativeControls": [
+        {
+          "box": [
+            47.5,
+            76,
+            273.5,
+            16
+          ],
+          "class": "SwiftUI.AppKitTextField",
+          "text": "灵感"
+        },
+        {
+          "box": [
+            16,
+            140,
+            336,
+            248
+          ],
+          "class": "SwiftUI.HostingScrollView",
+          "text": ""
+        }
+      ],
+      "path": "textures/menu-search.png",
+      "pixelSize": [
+        1472,
+        2548
+      ],
+      "pointSize": [
+        368,
+        637
+      ],
+      "sha256": "27e136813099658b6cedd5e9741fff87648289484bba553a1d63b659445c08ac"
+    },
+    {
+      "name": "history-light",
+      "nativeControls": [
+        {
+          "box": [
+            35.5,
+            14,
+            570.5,
+            16
+          ],
+          "class": "SwiftUI.AppKitTextField",
+          "text": ""
+        },
+        {
+          "box": [
+            0,
+            45,
+            620,
+            538
+          ],
+          "class": "SwiftUI.ListCoreScrollView",
+          "text": ""
+        }
+      ],
+      "path": "textures/history-light.png",
+      "pixelSize": [
+        2480,
+        2480
+      ],
+      "pointSize": [
+        620,
+        620
+      ],
+      "sha256": "fc13dcbd927804cff202fc9fa49071b759330d09f87fe14f10232d3b6b7f26dd"
+    },
+    {
+      "name": "history-dark",
+      "nativeControls": [
+        {
+          "box": [
+            35.5,
+            14,
+            570.5,
+            16
+          ],
+          "class": "SwiftUI.AppKitTextField",
+          "text": ""
+        },
+        {
+          "box": [
+            0,
+            45,
+            620,
+            538
+          ],
+          "class": "SwiftUI.ListCoreScrollView",
+          "text": ""
+        }
+      ],
+      "path": "textures/history-dark.png",
+      "pixelSize": [
+        2480,
+        2480
+      ],
+      "pointSize": [
+        620,
+        620
+      ],
+      "sha256": "5ad1981c999f505139778fd9195d87cc19eed5ed017749d9aea3be47739b8c12"
+    },
+    {
+      "name": "history-search",
+      "nativeControls": [
+        {
+          "box": [
+            35.5,
+            14,
+            549.5,
+            16
+          ],
+          "class": "SwiftUI.AppKitTextField",
+          "text": "灵感"
+        },
+        {
+          "box": [
+            0,
+            45,
+            620,
+            538
+          ],
+          "class": "SwiftUI.ListCoreScrollView",
+          "text": ""
+        }
+      ],
+      "path": "textures/history-search.png",
+      "pixelSize": [
+        2480,
+        2480
+      ],
+      "pointSize": [
+        620,
+        620
+      ],
+      "sha256": "0bf9c474acb1ae22f083df6485b18d9ec105552b8130278938423229e3e8fcd0"
+    },
+    {
+      "name": "history-image",
+      "nativeControls": [
+        {
+          "box": [
+            35.5,
+            14,
+            570.5,
+            16
+          ],
+          "class": "SwiftUI.AppKitTextField",
+          "text": ""
+        },
+        {
+          "box": [
+            0,
+            45,
+            620,
+            538
+          ],
+          "class": "SwiftUI.ListCoreScrollView",
+          "text": ""
+        }
+      ],
+      "path": "textures/history-image.png",
+      "pixelSize": [
+        2480,
+        2480
+      ],
+      "pointSize": [
+        620,
+        620
+      ],
+      "sha256": "befe2e56e3cb956e4655203fbc6581c39c517cffbddf5728fdd0d6f22df49492"
+    }
+  ],
+  "coordinateSystem": "Top-left origin; bounding boxes in logical points; multiply by 4 for pixels",
+  "fixtureDate": "2026-09-13T00:00:00Z",
+  "safety": "Never ordered or activated windows; no keyboard, pasteboard, installed app, network, or real user records.",
+  "scale": 4,
+  "regions": {
+    "menu": {
+      "full": [
+        0,
+        0,
+        368,
+        637
+      ],
+      "header": [
+        16,
+        16,
+        336,
+        38
+      ],
+      "brand": [
+        16,
+        16,
+        38,
+        38
+      ],
+      "search": [
+        16,
+        66,
+        336,
+        36
+      ],
+      "history": [
+        16,
+        140,
+        336,
+        248
+      ],
+      "row_image": [
+        16,
+        140,
+        336,
+        54
+      ],
+      "row_text": [
+        16,
+        197,
+        336,
+        54
+      ],
+      "row_url": [
+        16,
+        254,
+        336,
+        54
+      ],
+      "row_note": [
+        16,
+        311,
+        336,
+        54
+      ],
+      "image_thumbnail": [
+        24,
+        150,
+        34,
+        34
+      ],
+      "tools": [
+        16,
+        400,
+        336,
+        116
+      ],
+      "update": [
+        16,
+        528,
+        336,
+        55
+      ],
+      "footer": [
+        22,
+        595,
+        324,
+        26
+      ]
+    },
+    "history": {
+      "full": [
+        0,
+        0,
+        620,
+        620
+      ],
+      "search": [
+        8,
+        8,
+        604,
+        28
+      ],
+      "list": [
+        0,
+        45,
+        620,
+        538
+      ],
+      "image_thumbnail": [
+        16,
+        62,
+        48,
+        48
+      ],
+      "first_row": [
+        8,
+        51,
+        604,
+        62
+      ],
+      "footer": [
+        0,
+        584,
+        620,
+        36
+      ]
+    }
+  },
+  "regionProvenance": "Native control geometry for search/list; explicit SwiftUI padding/frame dimensions and observed 4x raster bounds for remaining component boxes. No reconstructed UI.",
+  "cutouts": [
+    {
+      "source": "menu-light-filled",
+      "role": "header",
+      "box": [
+        16,
+        16,
+        336,
+        38
+      ],
+      "path": "textures/menu-light-filled--header.png",
+      "sha256": "3cd3cceef54ea81d201a13dbcfaba384131aedee87bcf3b1944eca7469ba4d99"
+    },
+    {
+      "source": "menu-light-filled",
+      "role": "brand",
+      "box": [
+        16,
+        16,
+        38,
+        38
+      ],
+      "path": "textures/menu-light-filled--brand.png",
+      "sha256": "20e676324da990000622802dfcedc859b5091140a0289ba3687766a23a2a4e95"
+    },
+    {
+      "source": "menu-light-filled",
+      "role": "search",
+      "box": [
+        16,
+        66,
+        336,
+        36
+      ],
+      "path": "textures/menu-light-filled--search.png",
+      "sha256": "de821104b7b6f46dfdf3c48fa042cdf7e20fad2ae744851d4e329b102279221c"
+    },
+    {
+      "source": "menu-light-filled",
+      "role": "history",
+      "box": [
+        16,
+        140,
+        336,
+        248
+      ],
+      "path": "textures/menu-light-filled--history.png",
+      "sha256": "879142aecabe53eb459f97a38ddd529468e2ec4bc55cc50d94178247379300ff"
+    },
+    {
+      "source": "menu-light-filled",
+      "role": "row_image",
+      "box": [
+        16,
+        140,
+        336,
+        54
+      ],
+      "path": "textures/menu-light-filled--row_image.png",
+      "sha256": "de6ae03364b4c0aef73afed504bea9239f7b3c53fa99fe2fddb639356a9807b4"
+    },
+    {
+      "source": "menu-light-filled",
+      "role": "row_text",
+      "box": [
+        16,
+        197,
+        336,
+        54
+      ],
+      "path": "textures/menu-light-filled--row_text.png",
+      "sha256": "7fc3d8884e8a1e53b068810549db60faaa1477fcad82a0dbec2e8ff32312d2d5"
+    },
+    {
+      "source": "menu-light-filled",
+      "role": "row_url",
+      "box": [
+        16,
+        254,
+        336,
+        54
+      ],
+      "path": "textures/menu-light-filled--row_url.png",
+      "sha256": "fbd2606fabf6396511a81e83d5b54a86d1f4d4effa732e951726ac51d74040ed"
+    },
+    {
+      "source": "menu-light-filled",
+      "role": "row_note",
+      "box": [
+        16,
+        311,
+        336,
+        54
+      ],
+      "path": "textures/menu-light-filled--row_note.png",
+      "sha256": "8226f14d10e16c350114a889911860b02a4d53dd3a72c227a35e926033e5e97c"
+    },
+    {
+      "source": "menu-light-filled",
+      "role": "image_thumbnail",
+      "box": [
+        24,
+        150,
+        34,
+        34
+      ],
+      "path": "textures/menu-light-filled--image_thumbnail.png",
+      "sha256": "56e03aa40cd214f189a1205a77db1c0ce3a28f7d94b32e7a5b37ebed271732da"
+    },
+    {
+      "source": "menu-light-filled",
+      "role": "tools",
+      "box": [
+        16,
+        400,
+        336,
+        116
+      ],
+      "path": "textures/menu-light-filled--tools.png",
+      "sha256": "74c4da76351e07d1b10e0d39beb89532d41516a518f24e53470921bb2c356b0d"
+    },
+    {
+      "source": "menu-light-filled",
+      "role": "update",
+      "box": [
+        16,
+        528,
+        336,
+        55
+      ],
+      "path": "textures/menu-light-filled--update.png",
+      "sha256": "d986204b2bbc8b3c5b79a25c61a3d17c1f55ec8c0a3433b91ecb7defbbca9e2e"
+    },
+    {
+      "source": "menu-light-filled",
+      "role": "footer",
+      "box": [
+        22,
+        595,
+        324,
+        26
+      ],
+      "path": "textures/menu-light-filled--footer.png",
+      "sha256": "630f6cada89f40204f6fae71144caabc127fad0b26262e27d93a943fb9c32e24"
+    },
+    {
+      "source": "menu-dark-filled",
+      "role": "header",
+      "box": [
+        16,
+        16,
+        336,
+        38
+      ],
+      "path": "textures/menu-dark-filled--header.png",
+      "sha256": "a1ccb5e884a789c18bfa0a154304b681000c91eedd989685c1f577693f91a412"
+    },
+    {
+      "source": "menu-dark-filled",
+      "role": "brand",
+      "box": [
+        16,
+        16,
+        38,
+        38
+      ],
+      "path": "textures/menu-dark-filled--brand.png",
+      "sha256": "1c6879554e305e8854e4dd1bc767c0e61d2bf3e410f33a77b96fb24649f879e3"
+    },
+    {
+      "source": "menu-dark-filled",
+      "role": "search",
+      "box": [
+        16,
+        66,
+        336,
+        36
+      ],
+      "path": "textures/menu-dark-filled--search.png",
+      "sha256": "9782c3ff79c83f1b7cafbce17092a95bc2e861c044698d3816c3072395795c67"
+    },
+    {
+      "source": "menu-dark-filled",
+      "role": "history",
+      "box": [
+        16,
+        140,
+        336,
+        248
+      ],
+      "path": "textures/menu-dark-filled--history.png",
+      "sha256": "74ec5fee2439f2d696296edf68bf7a0cbebb15bb820ad529281c48fa2e95a15f"
+    },
+    {
+      "source": "menu-dark-filled",
+      "role": "row_image",
+      "box": [
+        16,
+        140,
+        336,
+        54
+      ],
+      "path": "textures/menu-dark-filled--row_image.png",
+      "sha256": "e5bdde4165f1c8e8ea822f815c26c621b3ff44bc0896a7fa1e39c59a21fcb593"
+    },
+    {
+      "source": "menu-dark-filled",
+      "role": "row_text",
+      "box": [
+        16,
+        197,
+        336,
+        54
+      ],
+      "path": "textures/menu-dark-filled--row_text.png",
+      "sha256": "029bc2fbb033d2dc113f075da3ae2d8ca0e470ed36529e6fa329915b5089a232"
+    },
+    {
+      "source": "menu-dark-filled",
+      "role": "row_url",
+      "box": [
+        16,
+        254,
+        336,
+        54
+      ],
+      "path": "textures/menu-dark-filled--row_url.png",
+      "sha256": "daad0516a96e7f8562afd78bf9eba02c70986bd7577fe2dd04db4f2d6b73a8a6"
+    },
+    {
+      "source": "menu-dark-filled",
+      "role": "row_note",
+      "box": [
+        16,
+        311,
+        336,
+        54
+      ],
+      "path": "textures/menu-dark-filled--row_note.png",
+      "sha256": "60800d01c0fb4372e9e40547b57c8d7c60f254aa07ce882963efc349d7645a8c"
+    },
+    {
+      "source": "menu-dark-filled",
+      "role": "image_thumbnail",
+      "box": [
+        24,
+        150,
+        34,
+        34
+      ],
+      "path": "textures/menu-dark-filled--image_thumbnail.png",
+      "sha256": "e1e30df139dce9431f87861bf23cfc515cb4ccca01d33521c8d318dc9047da04"
+    },
+    {
+      "source": "menu-dark-filled",
+      "role": "tools",
+      "box": [
+        16,
+        400,
+        336,
+        116
+      ],
+      "path": "textures/menu-dark-filled--tools.png",
+      "sha256": "3b968b636565e51e6397a460425d7c608a4b04ca4b7da1d7e1416eecaff6009e"
+    },
+    {
+      "source": "menu-dark-filled",
+      "role": "update",
+      "box": [
+        16,
+        528,
+        336,
+        55
+      ],
+      "path": "textures/menu-dark-filled--update.png",
+      "sha256": "e789c14e82dc3bcedf72d2c8c1594e93f2a17e2cb7795d99be58310b3874abc0"
+    },
+    {
+      "source": "menu-dark-filled",
+      "role": "footer",
+      "box": [
+        22,
+        595,
+        324,
+        26
+      ],
+      "path": "textures/menu-dark-filled--footer.png",
+      "sha256": "a5259534ff9741e0626a5f780a2fea7e64bea44557bce7c7307af790b9516441"
+    },
+    {
+      "source": "menu-search",
+      "role": "header",
+      "box": [
+        16,
+        16,
+        336,
+        38
+      ],
+      "path": "textures/menu-search--header.png",
+      "sha256": "dacf43681c93f418022d18b4215d619abc0441cc5c4e1aca5c0da0f3469b5fee"
+    },
+    {
+      "source": "menu-search",
+      "role": "brand",
+      "box": [
+        16,
+        16,
+        38,
+        38
+      ],
+      "path": "textures/menu-search--brand.png",
+      "sha256": "a074793fd146f4a9f96933421ec93c46636dce136af76f0b0bc4bc462d9341e6"
+    },
+    {
+      "source": "menu-search",
+      "role": "search",
+      "box": [
+        16,
+        66,
+        336,
+        36
+      ],
+      "path": "textures/menu-search--search.png",
+      "sha256": "8edbe8a1f577a4e9fae667218798c40dd711b124c3a015f9bcae3c26b6f67b74"
+    },
+    {
+      "source": "menu-search",
+      "role": "history",
+      "box": [
+        16,
+        140,
+        336,
+        248
+      ],
+      "path": "textures/menu-search--history.png",
+      "sha256": "635dd7357379e343dcb2c5f523a892b96171b6f813dccd60088b71c153fc2bd5"
+    },
+    {
+      "source": "menu-search",
+      "role": "row_image",
+      "box": [
+        16,
+        140,
+        336,
+        54
+      ],
+      "path": "textures/menu-search--row_image.png",
+      "sha256": "272516289fcae40f34f2dd27439627209a4407f39da51cdbdf92a233e99784ae"
+    },
+    {
+      "source": "menu-search",
+      "role": "row_text",
+      "box": [
+        16,
+        197,
+        336,
+        54
+      ],
+      "path": "textures/menu-search--row_text.png",
+      "sha256": "29c1facde41ff6edaa51f702c599f966bcb6bbb569622f22c7118ce569178898"
+    },
+    {
+      "source": "menu-search",
+      "role": "row_url",
+      "box": [
+        16,
+        254,
+        336,
+        54
+      ],
+      "path": "textures/menu-search--row_url.png",
+      "sha256": "29c1facde41ff6edaa51f702c599f966bcb6bbb569622f22c7118ce569178898"
+    },
+    {
+      "source": "menu-search",
+      "role": "row_note",
+      "box": [
+        16,
+        311,
+        336,
+        54
+      ],
+      "path": "textures/menu-search--row_note.png",
+      "sha256": "29c1facde41ff6edaa51f702c599f966bcb6bbb569622f22c7118ce569178898"
+    },
+    {
+      "source": "menu-search",
+      "role": "image_thumbnail",
+      "box": [
+        24,
+        150,
+        34,
+        34
+      ],
+      "path": "textures/menu-search--image_thumbnail.png",
+      "sha256": "6508d0aee9b6341dbbf024d8bbe2eda66f8650e1325e7a7d043c7782943ca68c"
+    },
+    {
+      "source": "menu-search",
+      "role": "tools",
+      "box": [
+        16,
+        400,
+        336,
+        116
+      ],
+      "path": "textures/menu-search--tools.png",
+      "sha256": "841ecf30e2f309dfff59d9eecc689308bd12da22f26ab63aa84a70a21d719950"
+    },
+    {
+      "source": "menu-search",
+      "role": "update",
+      "box": [
+        16,
+        528,
+        336,
+        55
+      ],
+      "path": "textures/menu-search--update.png",
+      "sha256": "08e187e3b8d55007b9e4bb2c8bbf36462e96591b94aadbbda4aa125d1155c513"
+    },
+    {
+      "source": "menu-search",
+      "role": "footer",
+      "box": [
+        22,
+        595,
+        324,
+        26
+      ],
+      "path": "textures/menu-search--footer.png",
+      "sha256": "8325a1bb16583af0d49b4e8f478dcde58e538dd6575d36c2fb4cd2c01579765d"
+    },
+    {
+      "source": "menu-checking",
+      "role": "header",
+      "box": [
+        16,
+        16,
+        336,
+        38
+      ],
+      "path": "textures/menu-checking--header.png",
+      "sha256": "9245dd28fde78806e5ca59c6239ea58f9f9a3ba52a6d55ce2e2ab4f9667f9a78"
+    },
+    {
+      "source": "menu-checking",
+      "role": "brand",
+      "box": [
+        16,
+        16,
+        38,
+        38
+      ],
+      "path": "textures/menu-checking--brand.png",
+      "sha256": "ec9e7a6f14e769a45781d6598bb3e33463dc52db4966d1cf4e716096021c0e54"
+    },
+    {
+      "source": "menu-checking",
+      "role": "search",
+      "box": [
+        16,
+        66,
+        336,
+        36
+      ],
+      "path": "textures/menu-checking--search.png",
+      "sha256": "a34e9997f1b4d146835363c81f7d500b7b3cb43f5d97e67cd1e576bcbebeaa80"
+    },
+    {
+      "source": "menu-checking",
+      "role": "history",
+      "box": [
+        16,
+        140,
+        336,
+        248
+      ],
+      "path": "textures/menu-checking--history.png",
+      "sha256": "2e1d30326a8777914280bddcbf130c1d50750e7457fcf0f2ccc65a1cff99b2a4"
+    },
+    {
+      "source": "menu-checking",
+      "role": "row_image",
+      "box": [
+        16,
+        140,
+        336,
+        54
+      ],
+      "path": "textures/menu-checking--row_image.png",
+      "sha256": "1f0463e7c2e2009928210eec28998761ee6c74782aa0c12faffeecac2f4520d0"
+    },
+    {
+      "source": "menu-checking",
+      "role": "row_text",
+      "box": [
+        16,
+        197,
+        336,
+        54
+      ],
+      "path": "textures/menu-checking--row_text.png",
+      "sha256": "07c32475e730fc877b7571ef18d776f0b0ea4c57bcf61e5973b93d3ee4590a7e"
+    },
+    {
+      "source": "menu-checking",
+      "role": "row_url",
+      "box": [
+        16,
+        254,
+        336,
+        54
+      ],
+      "path": "textures/menu-checking--row_url.png",
+      "sha256": "9b32790fdd658408cadf2f35acb7b734f69c49ce925ea300eb44ceef8dba2c13"
+    },
+    {
+      "source": "menu-checking",
+      "role": "row_note",
+      "box": [
+        16,
+        311,
+        336,
+        54
+      ],
+      "path": "textures/menu-checking--row_note.png",
+      "sha256": "762934e548b33ea59f2ed0feb62f39bba645ae1aa6f2b882be58e504e034ab7a"
+    },
+    {
+      "source": "menu-checking",
+      "role": "image_thumbnail",
+      "box": [
+        24,
+        150,
+        34,
+        34
+      ],
+      "path": "textures/menu-checking--image_thumbnail.png",
+      "sha256": "c9f5cd37c83d82f0a6cb5509bde05ddf8731961ff54eb1b36263353c711f345b"
+    },
+    {
+      "source": "menu-checking",
+      "role": "tools",
+      "box": [
+        16,
+        400,
+        336,
+        116
+      ],
+      "path": "textures/menu-checking--tools.png",
+      "sha256": "42a4db2ab084e9d0da62ab9246b93873694645d0b1b2cafd2d6ea513f42f9145"
+    },
+    {
+      "source": "menu-checking",
+      "role": "update",
+      "box": [
+        16,
+        528,
+        336,
+        55
+      ],
+      "path": "textures/menu-checking--update.png",
+      "sha256": "e6f70e537601bbcfa39ff9eb741bffaff6364525ec29098175ca02e5ebc052ff"
+    },
+    {
+      "source": "menu-checking",
+      "role": "footer",
+      "box": [
+        22,
+        595,
+        324,
+        26
+      ],
+      "path": "textures/menu-checking--footer.png",
+      "sha256": "4f480452afc1ad13edf4a2db7a8bf399c2bd09d061026631fe4fe6a887f1a8e5"
+    },
+    {
+      "source": "menu-current",
+      "role": "header",
+      "box": [
+        16,
+        16,
+        336,
+        38
+      ],
+      "path": "textures/menu-current--header.png",
+      "sha256": "fad69caf21da1ebb3edfa3628bd6cddd95796c82041bc1729043c69e34efe8b2"
+    },
+    {
+      "source": "menu-current",
+      "role": "brand",
+      "box": [
+        16,
+        16,
+        38,
+        38
+      ],
+      "path": "textures/menu-current--brand.png",
+      "sha256": "232b0d54129272e98cab204b7c26deebbdcec9858425fbd2dc2598dc0aa9c958"
+    },
+    {
+      "source": "menu-current",
+      "role": "search",
+      "box": [
+        16,
+        66,
+        336,
+        36
+      ],
+      "path": "textures/menu-current--search.png",
+      "sha256": "368fa23ec951ae6465ee58b38e77ab399dae45ac4be3f79741baa117d99ea182"
+    },
+    {
+      "source": "menu-current",
+      "role": "history",
+      "box": [
+        16,
+        140,
+        336,
+        248
+      ],
+      "path": "textures/menu-current--history.png",
+      "sha256": "1838843217691e8cae58262a441502aabd4b5954f30388fe0c882194c93253dc"
+    },
+    {
+      "source": "menu-current",
+      "role": "row_image",
+      "box": [
+        16,
+        140,
+        336,
+        54
+      ],
+      "path": "textures/menu-current--row_image.png",
+      "sha256": "c12f83dfd47018a660c542f757cc483492f0e5c6a96467a6bdf7bcd09dc98afd"
+    },
+    {
+      "source": "menu-current",
+      "role": "row_text",
+      "box": [
+        16,
+        197,
+        336,
+        54
+      ],
+      "path": "textures/menu-current--row_text.png",
+      "sha256": "52fbc74570a523afe17a01a87e176851a71a72bbf1131d79f6705df995305db5"
+    },
+    {
+      "source": "menu-current",
+      "role": "row_url",
+      "box": [
+        16,
+        254,
+        336,
+        54
+      ],
+      "path": "textures/menu-current--row_url.png",
+      "sha256": "23f1e592247f6392de39c4e2d8ed6e7ee15175751c5dcee9e821c7dcb061751c"
+    },
+    {
+      "source": "menu-current",
+      "role": "row_note",
+      "box": [
+        16,
+        311,
+        336,
+        54
+      ],
+      "path": "textures/menu-current--row_note.png",
+      "sha256": "75d8a2bb4de0c795c7b759f9b63bf30a80bbdaf0009b0a715e1da785514e90ba"
+    },
+    {
+      "source": "menu-current",
+      "role": "image_thumbnail",
+      "box": [
+        24,
+        150,
+        34,
+        34
+      ],
+      "path": "textures/menu-current--image_thumbnail.png",
+      "sha256": "2fe839f0dde2cb562948af09b1103d755105281f6f7a141c20c55b4a966b736f"
+    },
+    {
+      "source": "menu-current",
+      "role": "tools",
+      "box": [
+        16,
+        400,
+        336,
+        116
+      ],
+      "path": "textures/menu-current--tools.png",
+      "sha256": "a59939b271f18d6c981dfc84e9bb42fa7b24022d380ca8ce04236b79c1c88169"
+    },
+    {
+      "source": "menu-current",
+      "role": "update",
+      "box": [
+        16,
+        528,
+        336,
+        55
+      ],
+      "path": "textures/menu-current--update.png",
+      "sha256": "3392b8a5af563cc81e7e0de795daeb62f25f203fc3b914ce0b19525b9053b069"
+    },
+    {
+      "source": "menu-current",
+      "role": "footer",
+      "box": [
+        22,
+        595,
+        324,
+        26
+      ],
+      "path": "textures/menu-current--footer.png",
+      "sha256": "5e6294251d224027176da5d1732d40be9c125817dd56b6ccc9b8e858699040ff"
+    },
+    {
+      "source": "history-light",
+      "role": "search",
+      "box": [
+        8,
+        8,
+        604,
+        28
+      ],
+      "path": "textures/history-light--search.png",
+      "sha256": "379b629e1b46138bef6eced656373304d791e5a7feb279eb9257b97ddd11f1e1"
+    },
+    {
+      "source": "history-light",
+      "role": "list",
+      "box": [
+        0,
+        45,
+        620,
+        538
+      ],
+      "path": "textures/history-light--list.png",
+      "sha256": "7a8bdb9822736c31ee74b66c8ccd7942a05b48a566be6052c0ebb40d1888a080"
+    },
+    {
+      "source": "history-light",
+      "role": "image_thumbnail",
+      "box": [
+        16,
+        62,
+        48,
+        48
+      ],
+      "path": "textures/history-light--image_thumbnail.png",
+      "sha256": "551df65e9541348b51a31bdb039e24b910cb40df5d47f16bc7bb645233fa5794"
+    },
+    {
+      "source": "history-light",
+      "role": "first_row",
+      "box": [
+        8,
+        51,
+        604,
+        62
+      ],
+      "path": "textures/history-light--first_row.png",
+      "sha256": "099d03af5f590e60a80ff05a79a89eb89dc0a4396c8171156b58cdcbbde87794"
+    },
+    {
+      "source": "history-light",
+      "role": "footer",
+      "box": [
+        0,
+        584,
+        620,
+        36
+      ],
+      "path": "textures/history-light--footer.png",
+      "sha256": "ca189c91e52fb2873caf92049f07e0326e8ce2ea0495c4dad97cbe5284f788cc"
+    },
+    {
+      "source": "history-image",
+      "role": "search",
+      "box": [
+        8,
+        8,
+        604,
+        28
+      ],
+      "path": "textures/history-image--search.png",
+      "sha256": "74c911949591a350588bf499a52f43d9a182fbdf3d435a1ed40c11b169098211"
+    },
+    {
+      "source": "history-image",
+      "role": "list",
+      "box": [
+        0,
+        45,
+        620,
+        538
+      ],
+      "path": "textures/history-image--list.png",
+      "sha256": "12ba026543b812cf9a41f87020d53aac29a1ae83551e27d506c95c23222634a3"
+    },
+    {
+      "source": "history-image",
+      "role": "image_thumbnail",
+      "box": [
+        16,
+        62,
+        48,
+        48
+      ],
+      "path": "textures/history-image--image_thumbnail.png",
+      "sha256": "0b4a829b49f01212ae70c23cd535ddc086b76f0441277fdc5d0bcf5b9489180e"
+    },
+    {
+      "source": "history-image",
+      "role": "first_row",
+      "box": [
+        8,
+        51,
+        604,
+        62
+      ],
+      "path": "textures/history-image--first_row.png",
+      "sha256": "a13d0f1698928041f8411210fbae1eee26ccfcd385fec0cbfbce688a0afcfb86"
+    },
+    {
+      "source": "history-image",
+      "role": "footer",
+      "box": [
+        0,
+        584,
+        620,
+        36
+      ],
+      "path": "textures/history-image--footer.png",
+      "sha256": "c71a482c4c4315de1f94e30b9235d585851a19f0fa205c92192e1c4640ce1300"
+    }
+  ]
+}

@@ -2,3 +2,10 @@
 dist/
 .DS_Store
 .swiftpm/
+
+# Product-video workspace
+promo/node_modules/
+promo/qa/
+promo/out/
+promo/.cache/
+promo/public/audio/

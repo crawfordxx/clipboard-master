@@ -1,7 +1,11 @@
 # README assets
 
-- `hero.png`: AI-generated Clipboard Master brand illustration; not an application screenshot.
-- `local-history.png`: AI-generated conceptual local-storage illustration; does not imply encryption or synchronization.
-- `menu-light.png`, `menu-dark.png`: native SwiftUI rendering from MenuPanelView using synthetic clipboard entries, version label 2.1.1. No private clipboard data is depicted.
+Current identity is the ivory-and-blue pony embracing a clipboard, shared with assets/brand/pony.png and the application icon.
 
-Illustrations were created with the built-in image_gen tool. Original prompts are recorded in `image-prompts.json`.
+- pony-hero.png / pony-local-history.png: AI-generated conceptual illustrations based on the same master character; not product screenshots.
+- menu-light.png / menu-dark.png: actual native SwiftUI rendering at4x with only synthetic fixtures.
+- promo-poster.png: actual frame1090 from the final promotional video.
+- clipboard-master-promo.mp4 / clipboard-master-promo-nobgm.mp4: shared final picture; BGM and independent SFX-only versions. Music/source details and technical review are under promo/docs.
+- Older hero.png/local-history.png remain as historical source assets but are no longer embedded by the README.
+
+Exact new-generation prompts are in assets/brand/generation.json. No live/private clipboard data is included.

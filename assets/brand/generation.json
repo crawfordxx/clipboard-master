@@ -1,0 +1,21 @@
+{
+  "provider": "built-in image_gen",
+  "master": {
+    "file": "pony.png",
+    "prompt": "Create a refined version of the provided cute baby pony character as ONE unified, extremely simplified square character image. Keep its recognizable creamy ivory face, cobalt-blue rounded mane, two blunt ears, gentle tiny eyes and calm smile. The new defining idea is a pony helper HUGGING A CLIPBOARD, not a pony portrait alone.\nThe clipboard must be immediately identifiable and almost as important as the face: large upright rounded cobalt-blue board forming the character's lower silhouette, a broad ivory paper inset, one large cobalt clipboard clip centered on top, and only TWO thick simple horizontal blue strokes on the paper. Two broad ivory hooves softly embrace its sides. Pony head emerges above the clipboard, ears both visible. Board and pony form one compact coherent silhouette, no floating separate prop. No crown, graduation hat, clothes, symbols, extra accessories or words.\nUse only ivory and cobalt-blue for character and board, solid gently muted sky-blue background #DDECF8. Broad clean color regions, around 7 dominant shapes; no delicate outlines, fur details or tiny components. Friendly rounded graphic forms, readable at 32x32. Upright, slightly toward lower-left, character and clipboard together dominate85–95% of the full square. Preserve small comfortable margins around ears and board so the whole identity is readable. Add an extremely, extremely subtle, almost imperceptible sense of depth through a barely-there neo-skeuomorphic treatment. No photorealistic texture, glossy hotspots, strong3D, cast shadow, scene, text, watermark, card frame or presentation mask. Full-bleed square background with square outer corners.",
+    "dimensions": [
+      1254,
+      1254
+    ]
+  },
+  "readme": [
+    {
+      "file": "pony-hero.png",
+      "prompt": "Create a wide 2.5:1 product banner using the PROVIDED pony-with-clipboard character as the exact identity reference. Preserve the ivory round face, cobalt smooth mane, two ears, tiny blue eyes and smile, and the large cobalt clipboard held by two ivory hooves. Scene: calm pale-sky-blue full background, clean generous negative space, the same simple barely-dimensional graphic style as the character, no unrelated photographic props. Composition: character fully recognizable on the right third, large crisp dark-navy sans-serif words on the left reading exactly \"Clipboard Master\", with a simple large subtitle exactly \"复制过的，随时找回\". A few broad rounded text and image cards can sit neatly near the clipboard to communicate saved copy history; no fabricated app screenshots, no busy detail. Understated friendly desktop utility brand. Keep typography sharp and correctly spelled. No extra words, logos, borders, watermark, or cloud imagery."
+    },
+    {
+      "file": "pony-local-history.png",
+      "prompt": "Create a landscape16:9 illustration continuing the exact PROVIDED pony-with-clipboard character identity: same ivory face, cobalt smooth mane, two ears, tiny blue eyes and smile, two ivory hooves holding a large blue clipboard. Show the character calmly organizing just THREE large rounded cards (a text card with two broad lines, a simple picture thumbnail card, another note card) neatly around its clipboard on its own little desktop. The character and clipboard remain one dominant subject, slightly right of center; roomy clear left area. Solid pale-sky-blue / creamy offwhite environment, restrained cobalt accents, soft barely-there depth matching the reference, ultra-clean graphic forms, not photorealism. Communicate local history and orderly retrieval, not remote/cloud sync. No text, padlocks, shields, cloud, logos, watermarks, borders, or unrelated props. Preserve the clipboard meaning clearly."
+    }
+  ]
+}
