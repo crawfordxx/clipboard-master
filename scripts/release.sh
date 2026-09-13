@@ -13,8 +13,12 @@ fi
 
 echo "$VERSION" > VERSION
 git add VERSION
-git commit -m "chore: release v$VERSION"
+if [ -n "$(git status --porcelain)" ]; then
+  git commit -m "chore: release v$VERSION"
+fi
 git tag "v$VERSION"
 git push origin main --tags
+git push origin main || true   # 无新提交时推送报错可忽略
+git push origin "v$VERSION"
 gh release create "v$VERSION" --title "v$VERSION" --generate-notes --latest
 echo "✅ v$VERSION 已发布：https://github.com/crawfordxx/clipboard-master/releases/tag/v$VERSION"
