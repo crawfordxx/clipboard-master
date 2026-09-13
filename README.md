@@ -172,6 +172,8 @@ powershell -ExecutionPolicy Bypass -File install.ps1 -Launch
 
 ## 开发与贡献
 
+运行 macOS 测试需要 **Swift 6 / Xcode 16+**（核心测试使用 Swift Testing）；CI 在 macOS 14 上显式选择 Xcode 16.2。
+
 ```bash
 # macOS：核心库与更新器回归测试
 swift test

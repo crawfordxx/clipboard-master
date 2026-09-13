@@ -7,6 +7,9 @@ jobs:
   macos:
     name: macOS (swift test)
     runs-on: macos-14
+    env:
+      # Swift Testing requires the Swift 6 toolchain bundled with Xcode 16.
+      DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
     steps:
       - uses: actions/checkout@v4
       - name: Test
