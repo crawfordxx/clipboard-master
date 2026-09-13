@@ -44,7 +44,9 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         popover.delegate = self
         popover.contentViewController = NSHostingController(rootView: MenuPanelView(
             model: panelModel, updater: updateChecker,
-            onCopy: { [weak self] id in self?.copyEntryById(id); self?.popover.performClose(nil) },
+            onCopy: { [weak self] id in
+                if self?.copyEntryById(id) == true { self?.popover.performClose(nil) }
+            },
             onReveal: { [weak self] id in self?.popover.performClose(nil); self?.revealEntryById(id) },
             onOpenHistory: { [weak self] in
                 self?.previousApplication = nil
@@ -54,7 +56,8 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
             onClear: { [weak self] in self?.clearHistory() },
             onToggleLogin: { [weak self] in self?.toggleLaunchAtLogin() },
             onClose: { [weak self] in self?.popover.performClose(nil) },
-            onQuit: { [weak self] in self?.quit() }
+            onQuit: { [weak self] in self?.quit() },
+            onCopyInPlace: { [weak self] id in self?.copyEntryById(id) }
         ))
         statusItem.button?.target = self
         statusItem.button?.action = #selector(togglePopover)
@@ -70,7 +73,9 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
             withTimeInterval: HistoryLimits.pollInterval,
             repeats: true
         ) { [weak self] _ in
-            self?.monitor.poll()
+            guard let self else { return }
+            self.panelModel.synchronizeClipboard(changeCount: self.pasteboard.changeCount)
+            self.monitor.poll()
         }
 
         // 支持启动参数 --open-window 直接打开历史窗口（供冒烟测试/Agent 验证）
@@ -93,6 +98,7 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         if popover.isShown { popover.performClose(nil) }
         else {
             previousApplication = NSWorkspace.shared.frontmostApplication
+            panelModel.synchronizeClipboard(changeCount: pasteboard.changeCount)
             refreshMenu()
             Self.preparePopoverForDisplay(popover)
             popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
@@ -115,10 +121,18 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         previousApplication.activate(options: [])
     }
 
-    private func copyEntryById(_ id: UUID) {
-        guard let entry = store.entry(id: id) else { return }
-        pasteboard.write(entry.content)
+    @discardableResult
+    private func copyEntryById(_ id: UUID) -> Bool {
+        guard let entry = store.entry(id: id) else { return false }
+        let copied = pasteboard.writeReportingSuccess(entry.content)
         monitor.ignoreNextChange()
+        guard copied else {
+            panelModel.clearCopyFeedback()
+            panelModel.notice = "复制失败，请重试。"
+            return false
+        }
+        panelModel.recordCopy(id, changeCount: pasteboard.changeCount)
+        return true
     }
 
     private func revealEntryById(_ id: UUID) {

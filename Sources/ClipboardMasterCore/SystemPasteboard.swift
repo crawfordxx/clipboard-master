@@ -6,9 +6,11 @@ public final class SystemPasteboard: PasteboardReading {
     /// 密码管理器等标记的隐藏类型，不应被记录。
     private static let concealedType = NSPasteboard.PasteboardType("org.nspasteboard.ConcealedType")
 
-    private let pasteboard = NSPasteboard.general
+    private let pasteboard: NSPasteboard
 
-    public init() {}
+    public init(pasteboard: NSPasteboard = .general) {
+        self.pasteboard = pasteboard
+    }
 
     public var changeCount: Int { pasteboard.changeCount }
 
@@ -22,12 +24,18 @@ public final class SystemPasteboard: PasteboardReading {
     }
 
     public func write(_ content: ClipboardContent) {
+        _ = writeReportingSuccess(content)
+    }
+
+    /// Acknowledges the actual pasteboard write before showing success feedback.
+    @discardableResult
+    public func writeReportingSuccess(_ content: ClipboardContent) -> Bool {
         pasteboard.clearContents()
         switch content {
         case .text(let text):
-            pasteboard.setString(text, forType: .string)
+            return pasteboard.setString(text, forType: .string)
         case .image(let imageData, _, _):
-            pasteboard.setData(imageData, forType: .png)
+            return pasteboard.setData(imageData, forType: .png)
         }
     }
 

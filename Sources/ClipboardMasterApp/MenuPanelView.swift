@@ -6,6 +6,24 @@ final class MenuPanelModel: ObservableObject {
     @Published var entries: [ClipboardEntry] = []
     @Published var launchAtLogin = false
     @Published var notice: String?
+    @Published private(set) var copiedEntryID: UUID?
+    private var copiedChangeCount: Int?
+
+    func recordCopy(_ id: UUID, changeCount: Int) {
+        copiedEntryID = id
+        copiedChangeCount = changeCount
+    }
+
+    func synchronizeClipboard(changeCount: Int) {
+        if let copiedChangeCount, copiedChangeCount != changeCount {
+            clearCopyFeedback()
+        }
+    }
+
+    func clearCopyFeedback() {
+        copiedEntryID = nil
+        copiedChangeCount = nil
+    }
 }
 
 /// A bounded, native popover: history scrolls independently from the tool section.
@@ -19,6 +37,7 @@ struct MenuPanelView: View {
     let onToggleLogin: () -> Void
     let onClose: () -> Void
     let onQuit: () -> Void
+    var onCopyInPlace: ((UUID) -> Void)? = nil
     @State private var query = ""
     @State private var confirmClear = false
     @FocusState private var focusedEntry: UUID?
@@ -145,6 +164,18 @@ struct MenuPanelView: View {
                                 }.buttonStyle(PanelButtonStyle()).help("在 Finder 中显示")
                                     .accessibilityLabel("在 Finder 中显示图片")
                             }
+                            Button {
+                                (onCopyInPlace ?? onCopy)(entry.id)
+                            } label: {
+                                Image(systemName: model.copiedEntryID == entry.id ? "checkmark" : "doc.on.doc")
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundStyle(model.copiedEntryID == entry.id ? Color.accentColor : Color.secondary)
+                                    .frame(width: 30, height: 34)
+                            }
+                            .buttonStyle(PanelButtonStyle())
+                            .help(model.copiedEntryID == entry.id ? "已复制到剪贴板" : "复制到剪贴板")
+                            .accessibilityLabel(model.copiedEntryID == entry.id ? "已复制到剪贴板" : "复制到剪贴板")
+                            .accessibilityIdentifier("copy-\(entry.id.uuidString)")
                         }
                     }
                 }
