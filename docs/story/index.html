@@ -1,0 +1,28 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>复制第二段，第一段也别丢 · Clipboard Master 开发手记</title><meta name="description" content="从一个复制按钮和对勾说起，介绍开源剪贴板工具 Clipboard Master。"><link rel="stylesheet" href="../../assets/site.css"><link rel="icon" href="../../assets/brand/pony.png"></head><body><header class="wrap nav"><a class="brand" href="../../"><img src="../../assets/brand/pony.png" alt="" width="46" height="46">Clipboard Master</a><a href="../../">返回产品主页 →</a></header><main class="article"><p class="eyebrow">开发手记 / 2026.09</p><h1>复制第二段，第一段也别丢</h1>
+<p>文 / crawfordxx · Clipboard Master 开发手记 · 2026 年 9 月</p><video class="video" controls playsinline preload="metadata" poster="../../assets/readme/promo-poster.png" aria-label="Clipboard Master 产品演示"><source src="../../assets/readme/clipboard-master-promo.mp4" type="video/mp4">请<a href="../../assets/readme/clipboard-master-promo.mp4">下载 MP4</a>观看。</video><p class="note">无口播，画面文字介绍历史、搜索、复制和本机存储。视频录制早于本次复制按钮改动，最新交互以文章截图为准。</p><p>刚复制好一个链接，又顺手复制了一段文字。等到要粘贴链接时，剪贴板里只剩下后面那段。</p>
+<p>写文档、整理资料、在几个窗口之间搬运内容，这类小中断很常见。原来的页面还开着也得回去翻，页面关了就更麻烦。我在打磨的开源工具 Clipboard Master，想管好这件小事。</p>
+<p>它待在 Mac 的菜单栏或 Windows 的托盘里，把最近复制的文字和图片留下来。需要时打开历史，搜一下，重新复制，再回到目标应用粘贴。两类内容合计保留最近 200 条，重复内容会移到最前，不反复占位置。</p>
+<p><img loading="lazy" alt="复制第二段，第一段也别丢" src="../../assets/launch/clipboard-history.png"></p>
+<h2>这次补上的，是一个对勾</h2>
+<p>最近改 macOS 界面时，一个反馈很直接。</p>
+<p>“每条记录右边是不是应该有个复制按钮？点完变成对勾，才知道复制好了。”</p>
+<p>确实。只让整行可点击，用户得猜这里能不能复制；点完浮层立刻收起，也少了一次确认。</p>
+<p>现在每条记录右侧都有独立的复制按钮。系统确认写入成功，图标才变成对勾，菜单保持打开。复制另一条，对勾跟着换过去；剪贴板内容被其他程序改了，旧标记也会取消，避免把过去的成功当成当前状态。</p>
+<p>喜欢快一点的操作也还在。点击记录正文，依然可以复制并收起菜单。按钮负责给你确认，正文保留原来的快捷用法。</p>
+<p><img loading="lazy" alt="点一下复制，对勾确认" src="../../assets/launch/copy-confirmation.png"></p>
+<h2>少一点打扰，也少一点猜测</h2>
+<p>新版 Mac 浮层固定宽度，长内容不会把整个菜单横向撑开。记录列表可以单独滚动，搜索框就在顶部，图片旁边保留了在 Finder 中定位的入口。</p>
+<p>检查更新也重新梳理了一遍。检查中、发现更新、安装中和失败后的重试，都放在同一个区域。界面等真实请求结果回来再提示，不用一个定时器猜“是不是失败了”。</p>
+<p>这些变化没有增加多少功能入口。我更希望你打开它时，能立刻找到需要的那条，知道自己刚才有没有复制成功，然后继续手里的事。</p>
+<p><img loading="lazy" alt="macOS 原生界面与复制成功标记" src="../../assets/readme/copy-success.png"></p>
+<h2>小马怀里，要有一块剪贴板</h2>
+<p>我也给它换了个形象。奶油白的小马、蓝色鬃毛，怀里抱着一块大剪贴板。</p>
+<p>只画一匹可爱的小马，很难看出这个产品在做什么。加上剪贴板，它才像一个帮忙收好文字和图片的小管家。图标、介绍页和宣传片里用的是同一个形象。</p>
+<p><a href="https://crawfordxx.github.io/clipboard-master/docs/promo/">看约 37 秒的产品演示</a>。视频里的界面使用虚构示例记录，文中的两张功能插画由 AI 生成；上方菜单图来自真实 SwiftUI 组件渲染。macOS 和 Windows 的界面不同，这次的浮层和复制对勾改动针对 macOS。</p>
+<h2>适合谁，也有哪些限制</h2>
+<p>如果你经常在文档、聊天和浏览器之间搬运文字、链接或图片，又不需要账户和跨设备同步，可以看看这个项目。macOS 使用 Swift / AppKit / SwiftUI，Windows 使用 C# / WinForms，代码以 MIT 协议开源。</p>
+<p>历史保存在本机，但没有额外加密，也不能保证识别所有敏感内容。请不要把它当作密码保险箱。检查更新会连接 GitHub，工具本身不会把剪贴板历史上传到服务器。</p>
+<p>目前安装流程仍需从源码构建，Mac 需要 Swift 工具链，Windows 需要 .NET 8 SDK。README 写明了环境要求和安装方式；如果你希望直接下载即用，先查看 Releases，不要把 main 分支的演示当成已发布版本的承诺。</p>
+<p>项目还在继续打磨。欢迎试用，也欢迎把具体卡住的场景发到 Issues。比如“复制哪一类图片失败了”“在哪块屏幕上显示不全”，这些比一句“不好用”更能帮我找到问题。</p>
+<p><a href="https://crawfordxx.github.io/clipboard-master/">打开产品主页与安装说明</a> · <a href="https://github.com/crawfordxx/clipboard-master">查看 GitHub 源码</a>
+</p></main></body></html>

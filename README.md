@@ -16,6 +16,7 @@
 </p>
 
 <p align="center">
+  <a href="https://crawfordxx.github.io/clipboard-master/">产品主页</a> ·
   <a href="#界面预览">界面预览</a> ·
   <a href="#快速安装">快速安装</a> ·
   <a href="#日常使用">日常使用</a> ·
@@ -29,11 +30,15 @@
 
 ## 产品宣传片
 
-[![观看 Clipboard Master 小马管家宣传片](assets/readme/promo-poster.png)](https://crawfordxx.github.io/clipboard-master/docs/promo/)
+https://github.com/user-attachments/assets/f0510cd3-552b-4fa1-b90e-2b55a6da12f1
 
-<p align="center"><strong>小马管家，替你收好每一次复制。</strong><br><sub>约37秒 · 点击封面播放 · 原生界面使用虚构示例记录</sub></p>
+<p align="center"><strong>小马管家，替你收好每一次复制。</strong><br><sub>约37秒 · 直接播放 · 原生界面使用虚构示例记录</sub></p>
 
-[带配乐版](assets/readme/clipboard-master-promo.mp4) · [仅音效版](assets/readme/clipboard-master-promo-nobgm.mp4) · [视频工程与素材说明](promo/README.md)
+[独立播放器](https://crawfordxx.github.io/clipboard-master/docs/promo/) · [带配乐版](assets/readme/clipboard-master-promo.mp4) · [仅音效版](assets/readme/clipboard-master-promo-nobgm.mp4) · [视频工程与素材说明](promo/README.md)
+
+> 视频录制早于本次逐条复制按钮改动，最新交互以界面截图和下文说明为准。
+
+[开发手记：复制第二段，第一段也别丢](https://crawfordxx.github.io/clipboard-master/docs/story/) · [产品主页与演示](https://crawfordxx.github.io/clipboard-master/)
 
 ## 界面预览
 
