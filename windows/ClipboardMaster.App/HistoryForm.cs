@@ -64,8 +64,7 @@ internal sealed class HistoryForm : Form
         _list.FullRowSelect = true;
         _list.HideSelection = false;
         _list.SmallImageList = _thumbs;
-        _list.Columns.Add("内容", 340);
-        _list.Columns.Add("时间", 130);
+        _list.Columns.Add("内容", 450);
 
         var footer = new Panel { Dock = DockStyle.Bottom, Height = 40 };
         _count.Dock = DockStyle.Left;
@@ -127,7 +126,6 @@ internal sealed class HistoryForm : Form
                     item.ImageIndex = _thumbs.Images.Count - 1;
                 }
             }
-            item.SubItems.Add(RelativeTimeFormatter.Format(entry.CapturedAt));
             _list.Items.Add(item);
         }
         _list.EndUpdate();

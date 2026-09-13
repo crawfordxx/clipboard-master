@@ -53,20 +53,6 @@ public class HistoryExtensionTests
         Assert.False(HistoryFilter.Matches(image, "hello"));
     }
 
-    // ---- RelativeTimeFormatter ----
-
-    [Fact]
-    public void RelativeTime_Segments()
-    {
-        var now = new DateTime(2026, 9, 13, 12, 0, 0, DateTimeKind.Utc);
-        Assert.Equal("刚刚", RelativeTimeFormatter.Format(now.AddSeconds(-5), now));
-        Assert.Equal("1 分钟前", RelativeTimeFormatter.Format(now.AddSeconds(-90), now));
-        Assert.Equal("2 小时前", RelativeTimeFormatter.Format(now.AddHours(-2), now));
-        Assert.Equal("3 天前", RelativeTimeFormatter.Format(now.AddDays(-3), now));
-        Assert.Equal("刚刚", RelativeTimeFormatter.Format(now.AddSeconds(60), now)); // 时钟偏移钳制
-        Assert.Contains("2026", RelativeTimeFormatter.Format(now.AddDays(-30), now)); // 远期回退日期
-    }
-
     // ---- HistoryPersistence.GetImageFilePath ----
 
     [Fact]

@@ -75,13 +75,8 @@ private struct EntryRow: View {
     var body: some View {
         HStack(spacing: 10) {
             thumbnail
-            VStack(alignment: .leading, spacing: 3) {
-                Text(PreviewFormatter.menuTitle(for: entry.content))
-                    .lineLimit(2)
-                Text(entry.capturedAt, style: .relative)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+            Text(PreviewFormatter.menuTitle(for: entry.content))
+                .lineLimit(2)
             Spacer(minLength: 0)
         }
         .padding(.vertical, 3)

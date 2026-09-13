@@ -38,15 +38,8 @@ final class ImageMenuRowView: NSView {
 
         let title = NSTextField(labelWithString: PreviewFormatter.menuTitle(for: entry.content))
         title.font = .menuFont(ofSize: 0)
-        title.frame = NSRect(x: 66, y: 34, width: 200, height: 18)
+        title.frame = NSRect(x: 66, y: 24, width: 210, height: 18)
         addSubview(title)
-
-        let subtitle = NSTextField(labelWithString:
-            RelativeTimeFormatter.string(from: entry.capturedAt))
-        subtitle.font = .menuFont(ofSize: 10)
-        subtitle.textColor = .secondaryLabelColor
-        subtitle.frame = NSRect(x: 66, y: 14, width: 200, height: 14)
-        addSubview(subtitle)
 
         let reveal = NSButton(
             image: NSImage(systemSymbolName: "folder", accessibilityDescription: "在 Finder 中显示")!,

@@ -30,27 +30,3 @@ import Foundation
     #expect(HistoryFilter.matches(image, query: "128"))
     #expect(!HistoryFilter.matches(image, query: "hello"))
 }
-
-// MARK: - 相对时间
-
-@Test func relativeTimeJustNow() {
-    let now = Date(timeIntervalSince1970: 1000)
-    #expect(RelativeTimeFormatter.string(from: now - 5, now: now) == "刚刚")
-}
-
-@Test func relativeTimeMinutesAndHoursAndDays() {
-    let now = Date(timeIntervalSince1970: 100_000)
-    #expect(RelativeTimeFormatter.string(from: now - 90, now: now) == "1 分钟前")
-    #expect(RelativeTimeFormatter.string(from: now - 7200, now: now) == "2 小时前")
-    #expect(RelativeTimeFormatter.string(from: now - 3 * 86_400, now: now) == "3 天前")
-}
-
-@Test func relativeTimeFutureClampsToJustNow() {
-    let now = Date(timeIntervalSince1970: 100_000)
-    #expect(RelativeTimeFormatter.string(from: now + 60, now: now) == "刚刚") // 时钟微小偏移友好处理
-}
-
-@Test func relativeTimeFarPastFallsBackToDate() {
-    let now = Date(timeIntervalSince1970: 100_000_000)
-    #expect(RelativeTimeFormatter.string(from: now - 30 * 86_400, now: now).contains("1973"))
-}
