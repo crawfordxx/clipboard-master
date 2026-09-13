@@ -1,0 +1,11 @@
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/bin/Debug/net8.0/ClipboardMaster.Core.deps.json
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/bin/Debug/net8.0/ClipboardMaster.Core.dll
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/bin/Debug/net8.0/ClipboardMaster.Core.pdb
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/obj/Debug/net8.0/ClipboardMaster.Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/obj/Debug/net8.0/ClipboardMaster.Core.AssemblyInfoInputs.cache
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/obj/Debug/net8.0/ClipboardMaster.Core.AssemblyInfo.cs
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/obj/Debug/net8.0/ClipboardMaster.Core.csproj.CoreCompileInputs.cache
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/obj/Debug/net8.0/ClipboardMaster.Core.dll
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/obj/Debug/net8.0/refint/ClipboardMaster.Core.dll
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/obj/Debug/net8.0/ClipboardMaster.Core.pdb
+/Users/crawford/workspace/massive-thing/clipboard-master/windows/ClipboardMaster.Core/obj/Debug/net8.0/ref/ClipboardMaster.Core.dll

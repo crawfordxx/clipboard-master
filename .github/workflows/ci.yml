@@ -1,0 +1,27 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  macos:
+    name: macOS (swift test)
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test
+        run: swift test
+
+  windows:
+    name: Windows (dotnet test)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Test
+        run: dotnet test windows/ClipboardMaster.Core.Tests
+      - name: Build tray app
+        run: dotnet build windows/ClipboardMaster.App -c Release
